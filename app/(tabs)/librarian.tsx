@@ -144,7 +144,7 @@ export default function LibrarianScreen() {
       <View style={styles.header}>
         <Text style={styles.headerBadge}>국립중앙도서관 Q&A 데이터 기반 RAG</Text>
         <Text style={styles.headerTitle}>AI 사서에게 물어보세요</Text>
-        <Text style={styles.headerSub}>실제 사서 답변 5,907건을 근거로 응답합니다</Text>
+        <Text style={styles.headerSub}>실제 사서 답변 5,910건을 근거로 응답합니다</Text>
       </View>
 
       {/* 검색창 */}
