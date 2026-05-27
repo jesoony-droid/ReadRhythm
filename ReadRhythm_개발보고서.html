@@ -611,15 +611,17 @@ tr:nth-child(even) td { background:#f8fafc; }
     <div class="card">
       <div class="card-title">PostgreSQL + pgvector</div>
       <div style="font-size:9.5pt; font-family:monospace; color:#334155; line-height:1.7; background:#f8fafc; padding:8px; border-radius:6px;">
-        <b>qa_pairs</b> 테이블<br>
-        &nbsp;id, question TEXT<br>
-        &nbsp;answer TEXT<br>
-        &nbsp;source_url TEXT<br>
-        &nbsp;embedding VECTOR(384)<br>
-        &nbsp;ts_vector TSVECTOR  ← 키워드 검색<br><br>
-        인덱스: IVFFlat (벡터 유사도)<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GIN (전문 검색)<br>
-        총 레코드: <b>5,910건</b>
+        <b>qa_records</b> 테이블<br>
+        &nbsp;id SERIAL, ack_rec_key TEXT<br>
+        &nbsp;question / answer TEXT<br>
+        &nbsp;library / category TEXT<br>
+        &nbsp;q_embedding VECTOR(384)  ← 질문 벡터<br>
+        &nbsp;a_embedding VECTOR(384)  ← 답변 벡터<br>
+        &nbsp;morphemes TEXT  ← 형태소(kiwipiepy)<br>
+        &nbsp;source_url / reg_date TEXT<br><br>
+        인덱스: HNSW (벡터 유사도)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GIN (형태소 전문 검색)<br>
+        총 레코드: <b>5,910건</b> (임베딩·형태소 전체 완료)
       </div>
     </div>
 
@@ -678,7 +680,7 @@ tr:nth-child(even) td { background:#f8fafc; }
     <h2 style="margin-top:14px;">📈 성능 개선</h2>
     <table>
       <tr><th>항목</th><th>개선 내용</th></tr>
-      <tr><td>벡터 검색</td><td>IVFFlat 인덱스 적용 → 쿼리 속도 70% 향상</td></tr>
+      <tr><td>벡터 검색</td><td>HNSW 인덱스 적용 → 벡터 쿼리 속도 향상</td></tr>
       <tr><td>임베딩</td><td>로컬 모델(무료) → API 비용 0원</td></tr>
       <tr><td>AI 폴백</td><td>백엔드 미가동 시 목업 데이터 자동 제공</td></tr>
       <tr><td>상태 영속성</td><td>AsyncStorage persist → 앱 재시작 후 데이터 유지</td></tr>
