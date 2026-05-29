@@ -126,7 +126,7 @@ export default function QuotesScreen() {
       </ScrollView>
 
       {/* 문장 목록 */}
-      <ScrollView contentContainerStyle={styles.list}>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.list}>
         {filtered.length === 0 ? (
           <View style={styles.empty}>
             <Text style={styles.emptyEmoji}>💬</Text>
