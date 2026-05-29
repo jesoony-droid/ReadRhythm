@@ -19,6 +19,7 @@ export interface Book {
   publisher?: string;
   publishedAt?: string;
   totalPages?: number;
+  description?: string;
 }
 
 export type ReadingStatus = 'WANT' | 'READING' | 'DONE' | 'PAUSED';

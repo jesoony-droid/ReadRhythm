@@ -1,45 +1,58 @@
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet, Image,
+  View, Text, ScrollView, TouchableOpacity, StyleSheet, Image, ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Colors, Spacing, FontSize, Radius, Shadow } from '../../src/constants/tokens';
 import { useShelfStore } from '../../src/store/shelfStore';
+import { getBookByIsbn } from '../../src/api/books';
 import type { Book, ReadingStatus } from '../../src/types';
 
 const STATUS_OPTIONS: { key: ReadingStatus; label: string; desc: string }[] = [
-  { key: 'READING', label: '읽는 중', desc: '지금 바로 시작해요' },
+  { key: 'READING', label: '읽는 중',   desc: '지금 바로 시작해요' },
   { key: 'WANT',    label: '읽고 싶어요', desc: '위시리스트에 담아요' },
   { key: 'DONE',    label: '완독했어요', desc: '이미 읽은 책이에요' },
 ];
 
+const STATUS_LABEL: Record<ReadingStatus, string> = {
+  READING: '읽는 중', WANT: '읽고 싶어요', DONE: '완독', PAUSED: '잠시 멈춤',
+};
+
 export default function BookPreviewScreen() {
-  const { isbn, title, author, cover, publisher, publishedAt } =
-    useLocalSearchParams<{
-      isbn: string;
-      title: string;
-      author: string;
-      cover?: string;
-      publisher?: string;
-      publishedAt?: string;
-    }>();
+  const params = useLocalSearchParams<{
+    isbn: string; title: string; author: string;
+    cover?: string; publisher?: string; publishedAt?: string;
+  }>();
   const router = useRouter();
   const { items, addBook } = useShelfStore();
   const [picked, setPicked] = useState<ReadingStatus | null>(null);
   const [added, setAdded] = useState(false);
 
-  const existing = items.find((i) => i.book.isbn === isbn);
-
-  const book: Book = {
-    id: isbn,
-    isbn,
-    title: title ?? '',
-    author: author ?? '',
-    coverUrl: cover || undefined,
-    publisher: publisher || undefined,
-    publishedAt: publishedAt || undefined,
+  // query params 로 넘어온 기본 데이터 (즉시 표시용)
+  const fallback: Book = {
+    id: params.isbn,
+    isbn: params.isbn,
+    title: params.title ?? '',
+    author: params.author ?? '',
+    coverUrl: params.cover || undefined,
+    publisher: params.publisher || undefined,
+    publishedAt: params.publishedAt || undefined,
   };
+
+  // API로 상세 데이터 보강 (description 등)
+  const { data: apiBook, isFetching } = useQuery({
+    queryKey: ['bookDetail', params.isbn],
+    queryFn: () => getBookByIsbn(params.isbn),
+    staleTime: 1000 * 60 * 60, // 1시간 캐시
+    enabled: !!params.isbn,
+  });
+
+  const book: Book = apiBook ?? fallback;
+
+  const existing = items.find((i) => i.book.isbn === params.isbn);
+  const isInShelf = !!existing || added;
 
   function handleAdd() {
     if (!picked) return;
@@ -48,11 +61,11 @@ export default function BookPreviewScreen() {
   }
 
   function goToShelfItem() {
-    const item = items.find((i) => i.book.isbn === isbn);
+    const item = items.find((i) => i.book.isbn === params.isbn);
     if (item) router.replace(`/book/${item.id}`);
   }
 
-  const isInShelf = !!existing || added;
+  const displayCover = book.coverUrl || params.cover;
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -65,22 +78,39 @@ export default function BookPreviewScreen() {
       </View>
 
       <ScrollView contentContainerStyle={styles.scroll}>
+
         {/* 커버 + 기본 정보 */}
         <View style={styles.hero}>
-          {cover ? (
-            <Image source={{ uri: cover }} style={styles.cover} resizeMode="cover" />
+          {displayCover ? (
+            <Image source={{ uri: displayCover }} style={styles.cover} resizeMode="cover" />
           ) : (
             <View style={[styles.cover, styles.coverPlaceholder]}>
-              <Text style={styles.coverPlaceholderText}>{title?.slice(0, 2)}</Text>
+              <Text style={styles.coverPlaceholderText}>{book.title?.slice(0, 2)}</Text>
             </View>
           )}
-          <Text style={styles.titleText}>{title}</Text>
-          <Text style={styles.authorText}>{author}</Text>
-          {publisher ? <Text style={styles.publisherText}>{publisher}</Text> : null}
-          {publishedAt ? (
-            <Text style={styles.publishedAtText}>{publishedAt.slice(0, 4)}년 출판</Text>
-          ) : null}
+          <Text style={styles.titleText}>{book.title}</Text>
+          <Text style={styles.authorText}>{book.author}</Text>
+          <View style={styles.metaRow}>
+            {book.publisher ? <Text style={styles.metaText}>{book.publisher}</Text> : null}
+            {book.publisher && book.publishedAt ? <Text style={styles.metaDot}>·</Text> : null}
+            {book.publishedAt ? (
+              <Text style={styles.metaText}>{book.publishedAt.slice(0, 4)}년</Text>
+            ) : null}
+          </View>
         </View>
+
+        {/* 책 소개 */}
+        {isFetching ? (
+          <View style={styles.descLoading}>
+            <ActivityIndicator size="small" color={Colors.primary} />
+            <Text style={styles.descLoadingText}>책 정보 불러오는 중...</Text>
+          </View>
+        ) : book.description ? (
+          <View style={styles.descCard}>
+            <Text style={styles.descTitle}>책 소개</Text>
+            <Text style={styles.descText}>{book.description}</Text>
+          </View>
+        ) : null}
 
         {/* 서재 상태 */}
         {isInShelf ? (
@@ -89,13 +119,7 @@ export default function BookPreviewScreen() {
             <View style={{ flex: 1 }}>
               <Text style={styles.inShelfTitle}>서재에 담겨 있어요</Text>
               <Text style={styles.inShelfSub}>
-                {existing?.status === 'READING' && '읽는 중'}
-                {existing?.status === 'WANT'    && '읽고 싶어요'}
-                {existing?.status === 'DONE'    && '완독'}
-                {existing?.status === 'PAUSED'  && '잠시 멈춤'}
-                {added && !existing             && picked === 'READING' && '읽는 중'}
-                {added && !existing             && picked === 'WANT'    && '읽고 싶어요'}
-                {added && !existing             && picked === 'DONE'    && '완독'}
+                {existing ? STATUS_LABEL[existing.status] : picked ? STATUS_LABEL[picked] : ''}
               </Text>
             </View>
             <TouchableOpacity style={styles.goToShelfBtn} onPress={goToShelfItem}>
@@ -104,7 +128,6 @@ export default function BookPreviewScreen() {
           </View>
         ) : (
           <>
-            {/* 상태 선택 */}
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>서재에 담기</Text>
               <View style={styles.statusList}>
@@ -135,7 +158,9 @@ export default function BookPreviewScreen() {
               disabled={!picked}
             >
               <Text style={styles.addBtnText}>
-                {picked ? `"${STATUS_OPTIONS.find((o) => o.key === picked)?.label}"로 담기` : '상태를 선택해주세요'}
+                {picked
+                  ? `"${STATUS_OPTIONS.find((o) => o.key === picked)?.label}"로 담기`
+                  : '상태를 선택해주세요'}
               </Text>
             </TouchableOpacity>
           </>
@@ -165,18 +190,25 @@ const styles = StyleSheet.create({
     width: 120, height: 170, borderRadius: Radius.sm,
     backgroundColor: Colors.border, marginBottom: Spacing.sm,
   },
-  coverPlaceholder: {
-    alignItems: 'center', justifyContent: 'center',
-    backgroundColor: Colors.primary,
-  },
+  coverPlaceholder: { alignItems: 'center', justifyContent: 'center', backgroundColor: Colors.primary },
   coverPlaceholderText: { fontSize: 32, fontWeight: '700', color: '#fff' },
   titleText: {
     fontSize: FontSize.xl, fontWeight: '700', color: Colors.text,
     textAlign: 'center', lineHeight: 28,
   },
   authorText: { fontSize: FontSize.md, color: Colors.textSub },
-  publisherText: { fontSize: FontSize.sm, color: Colors.textMuted },
-  publishedAtText: { fontSize: FontSize.sm, color: Colors.textMuted },
+  metaRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  metaText: { fontSize: FontSize.sm, color: Colors.textMuted },
+  metaDot: { fontSize: FontSize.sm, color: Colors.border },
+
+  descLoading: { flexDirection: 'row', alignItems: 'center', gap: 8, justifyContent: 'center', padding: Spacing.md },
+  descLoadingText: { fontSize: FontSize.sm, color: Colors.textMuted },
+  descCard: {
+    backgroundColor: Colors.surface, borderRadius: Radius.md,
+    padding: Spacing.md, gap: Spacing.sm, ...Shadow.card,
+  },
+  descTitle: { fontSize: FontSize.sm, fontWeight: '700', color: Colors.textSub },
+  descText: { fontSize: FontSize.sm, color: Colors.textSub, lineHeight: 22 },
 
   inShelfCard: {
     flexDirection: 'row', alignItems: 'center', gap: Spacing.md,
@@ -194,16 +226,13 @@ const styles = StyleSheet.create({
 
   section: { gap: Spacing.sm },
   sectionTitle: { fontSize: FontSize.md, fontWeight: '700', color: Colors.text },
-
   statusList: {
     backgroundColor: Colors.surface, borderRadius: Radius.md,
-    overflow: 'hidden', ...Shadow.card,
-    borderWidth: 1, borderColor: Colors.border,
+    overflow: 'hidden', ...Shadow.card, borderWidth: 1, borderColor: Colors.border,
   },
   statusRow: {
     flexDirection: 'row', alignItems: 'center', gap: Spacing.md,
-    padding: Spacing.md,
-    borderBottomWidth: 1, borderBottomColor: Colors.border,
+    padding: Spacing.md, borderBottomWidth: 1, borderBottomColor: Colors.border,
   },
   statusRowActive: { backgroundColor: Colors.primaryLight },
   radioOuter: {
@@ -212,10 +241,7 @@ const styles = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center',
   },
   radioOuterActive: { borderColor: Colors.primary },
-  radioInner: {
-    width: 10, height: 10, borderRadius: 5,
-    backgroundColor: Colors.primary,
-  },
+  radioInner: { width: 10, height: 10, borderRadius: 5, backgroundColor: Colors.primary },
   statusLabel: { fontSize: FontSize.md, fontWeight: '600', color: Colors.textSub },
   statusLabelActive: { color: Colors.primary },
   statusDesc: { fontSize: FontSize.xs, color: Colors.textMuted, marginTop: 2 },
