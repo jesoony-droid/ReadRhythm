@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
   ringCenter: {
     position: 'absolute', alignItems: 'center', justifyContent: 'center',
   },
-  time: { fontSize: 110, fontWeight: '800', color: '#fff', letterSpacing: -4, fontVariant: ['tabular-nums'] as any },
+  time: { fontSize: 99, fontWeight: '800', color: '#fff', letterSpacing: -4, fontVariant: ['tabular-nums'] as any },
   timeLabel: { fontSize: FontSize.lg, color: 'rgba(255,255,255,0.5)', marginTop: 6, fontWeight: '500' },
 
   statsRow: { flexDirection: 'row', gap: Spacing.xl },
