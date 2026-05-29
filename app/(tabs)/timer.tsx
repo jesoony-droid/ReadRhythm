@@ -10,6 +10,7 @@ import { useTimerStore, POMODORO_SEC } from '../../src/store/timerStore';
 import { useSessionStore } from '../../src/store/sessionStore';
 import { useShelfStore } from '../../src/store/shelfStore';
 import { useXpStore } from '../../src/store/xpStore';
+import { TripleRing } from '../../src/components/timer/TripleRing';
 import { XP_RULES } from '../../src/utils/xp';
 import type { TimerMode } from '../../src/store/sessionStore';
 
@@ -80,25 +81,17 @@ export default function TimerScreen() {
     const isCompleted = elapsedSeconds >= 15 * 60;
 
     addSession({
-      shelfItemId: activeShelfItemId,
-      mode,
-      startedAt: sessionStartedAt,
-      endedAt: new Date().toISOString(),
-      durationSec: elapsedSeconds,
-      pageStart,
-      pageEnd: validPageEnd,
-      isCompleted,
+      shelfItemId: activeShelfItemId, mode,
+      startedAt: sessionStartedAt, endedAt: new Date().toISOString(),
+      durationSec: elapsedSeconds, pageStart, pageEnd: validPageEnd, isCompleted,
     });
 
-    if (activeShelfItemId && validPageEnd > pageStart) {
-      updatePage(activeShelfItemId, validPageEnd);
-    }
+    if (activeShelfItemId && validPageEnd > pageStart) updatePage(activeShelfItemId, validPageEnd);
     if (isCompleted) addXp(XP_RULES.SESSION_COMPLETE, '독서 세션 완료');
     const newTodayMin = todayMinutes() + Math.floor(elapsedSeconds / 60);
-    const newTodayPg = todayPages() + Math.max(validPageEnd - pageStart, 0);
-    if (newTodayMin >= dailyGoalMinutes && newTodayPg >= dailyGoalPages) {
+    const newTodayPg  = todayPages()   + Math.max(validPageEnd - pageStart, 0);
+    if (newTodayMin >= dailyGoalMinutes && newTodayPg >= dailyGoalPages)
       addXp(XP_RULES.DAILY_GOAL, '일일 목표 달성');
-    }
 
     setShowEndModal(false);
     reset();
@@ -109,7 +102,6 @@ export default function TimerScreen() {
   // 진행률
   const todayMin = todayMinutes();
   const todayPg  = todayPages();
-  const sessionMin = Math.round(elapsedSeconds / 60);
   const outerProgress  = Math.min(todayMin / dailyGoalMinutes, 1);
   const innerProgress  = Math.min(todayPg / dailyGoalPages, 1);
   const middleProgress = mode === 'pomodoro'
@@ -123,7 +115,7 @@ export default function TimerScreen() {
   const mm = String(Math.floor(displaySec / 60)).padStart(2, '0');
   const ss = String(displaySec % 60).padStart(2, '0');
 
-  const hasSession = sessionStartedAt !== null;
+  const hasSession   = sessionStartedAt !== null;
   const selectedBook = shelfItems.find((i) => i.id === (hasSession ? activeShelfItemId : selectedBookId));
 
   return (
@@ -138,37 +130,26 @@ export default function TimerScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* ── 대형 타이머 표시 ── */}
-        <View style={styles.timerDisplay}>
-          <Text style={styles.time}>{mm}:{ss}</Text>
-          <Text style={styles.timeLabel}>
-            {mode === 'pomodoro' ? '🍅 뽀모도로' : '📖 자유 독서'}
-          </Text>
+        {/* 스타디움 트랙 + 시간 오버레이 */}
+        <View style={styles.ringWrap}>
+          <TripleRing
+            outerProgress={outerProgress}
+            middleProgress={middleProgress}
+            innerProgress={innerProgress}
+          />
+          <View style={styles.ringCenter} pointerEvents="none">
+            <Text style={styles.time}>{mm}:{ss}</Text>
+            <Text style={styles.timeLabel}>
+              {mode === 'pomodoro' ? '🍅 뽀모도로' : '📖 자유 독서'}
+            </Text>
+          </View>
         </View>
 
-        {/* ── 운동장 트랙 3개 ── */}
-        <View style={styles.tracksWrap}>
-          <TrackBar
-            icon="⏱"
-            label="목표 시간"
-            valueText={`${todayMin} / ${dailyGoalMinutes}분`}
-            progress={outerProgress}
-            color={Colors.primary}
-          />
-          <TrackBar
-            icon="🏃"
-            label="이번 세션"
-            valueText={`${sessionMin}분`}
-            progress={middleProgress}
-            color={Colors.purple}
-          />
-          <TrackBar
-            icon="📄"
-            label="목표 페이지"
-            valueText={`${todayPg} / ${dailyGoalPages}p`}
-            progress={innerProgress}
-            color={Colors.green}
-          />
+        {/* 일일 목표 요약 */}
+        <View style={styles.statsRow}>
+          <StatDot color={Colors.primary} label="목표 시간" value={`${todayMin}/${dailyGoalMinutes}분`} />
+          <StatDot color={Colors.purple}  label="세션"      value={`${Math.round(elapsedSeconds / 60)}분`} />
+          <StatDot color={Colors.green}   label="목표 페이지" value={`${todayPg}/${dailyGoalPages}p`} />
         </View>
 
         {/* 모드 선택 */}
@@ -205,10 +186,7 @@ export default function TimerScreen() {
                   style={[styles.bookChip, selectedBookId === book.id && styles.bookChipActive]}
                   onPress={() => setSelectedBookId(book.id)}
                 >
-                  <Text
-                    style={[styles.bookChipText, selectedBookId === book.id && styles.bookChipTextActive]}
-                    numberOfLines={1}
-                  >
+                  <Text style={[styles.bookChipText, selectedBookId === book.id && styles.bookChipTextActive]} numberOfLines={1}>
                     {book.book.title}
                   </Text>
                 </Pressable>
@@ -263,9 +241,7 @@ export default function TimerScreen() {
               {Math.floor(elapsedSeconds / 60)}분 {elapsedSeconds % 60}초 동안 독서했어요 🎉
             </Text>
             {elapsedSeconds >= 15 * 60 && (
-              <View style={styles.xpBadge}>
-                <Text style={styles.xpText}>+20 XP 획득!</Text>
-              </View>
+              <View style={styles.xpBadge}><Text style={styles.xpText}>+20 XP 획득!</Text></View>
             )}
             <View style={styles.modalField}>
               <Text style={styles.modalFieldLabel}>종료 페이지</Text>
@@ -293,29 +269,12 @@ export default function TimerScreen() {
   );
 }
 
-// ── 트랙 바 컴포넌트 ──────────────────────────────────────────────────────────
-
-function TrackBar({
-  icon, label, valueText, progress, color,
-}: {
-  icon: string; label: string; valueText: string; progress: number; color: string;
-}) {
-  const pct = Math.min(Math.max(progress, 0), 1) * 100;
+function StatDot({ color, label, value }: { color: string; label: string; value: string }) {
   return (
-    <View style={styles.trackItem}>
-      <View style={styles.trackHeader}>
-        <Text style={styles.trackIcon}>{icon}</Text>
-        <Text style={styles.trackLabel}>{label}</Text>
-        <Text style={[styles.trackValue, { color }]}>{valueText}</Text>
-      </View>
-      {/* 트랙 (운동장 트랙 모양) */}
-      <View style={styles.trackBg}>
-        <View style={[styles.trackFill, { width: `${pct}%` as any, backgroundColor: color }]} />
-        {/* 완주 표시 반짝이 */}
-        {pct >= 100 && (
-          <View style={[styles.trackDone, { backgroundColor: color }]} />
-        )}
-      </View>
+    <View style={styles.statDot}>
+      <View style={[styles.statDotMark, { backgroundColor: color }]} />
+      <Text style={styles.statDotLabel}>{label}</Text>
+      <Text style={styles.statDotValue}>{value}</Text>
     </View>
   );
 }
@@ -337,40 +296,23 @@ const styles = StyleSheet.create({
   },
   bgmBtnText: { fontSize: FontSize.xs, fontWeight: '700', color: 'rgba(255,255,255,0.75)' },
 
-  // ── 대형 타이머 ──
-  timerDisplay: { alignItems: 'center', gap: 8, paddingVertical: Spacing.lg },
-  time: {
-    fontSize: 96, fontWeight: '700', color: '#fff',
-    letterSpacing: -2, fontVariant: ['tabular-nums'] as any,
+  // 스타디움 트랙 + 오버레이
+  ringWrap: { position: 'relative', alignItems: 'center', justifyContent: 'center' },
+  ringCenter: {
+    position: 'absolute', alignItems: 'center', justifyContent: 'center',
   },
-  timeLabel: { fontSize: FontSize.md, color: 'rgba(255,255,255,0.5)', fontWeight: '500' },
+  time: { fontSize: 72, fontWeight: '800', color: '#fff', letterSpacing: -2, fontVariant: ['tabular-nums'] as any },
+  timeLabel: { fontSize: FontSize.md, color: 'rgba(255,255,255,0.5)', marginTop: 4, fontWeight: '500' },
 
-  // ── 트랙 바 ──
-  tracksWrap: { width: '100%', gap: Spacing.lg },
-  trackItem: { width: '100%', gap: 10 },
-  trackHeader: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  trackIcon: { fontSize: 18 },
-  trackLabel: { flex: 1, fontSize: FontSize.md, color: 'rgba(255,255,255,0.65)', fontWeight: '500' },
-  trackValue: { fontSize: FontSize.md, fontWeight: '700' },
-  trackBg: {
-    width: '100%', height: 20,
-    backgroundColor: 'rgba(255,255,255,0.08)',
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
-  trackFill: {
-    height: '100%',
-    borderRadius: 10,
-    minWidth: 10,
-  },
-  trackDone: {
-    position: 'absolute', right: 0, top: 0, bottom: 0,
-    width: 4, opacity: 0.8,
-  },
+  statsRow: { flexDirection: 'row', gap: Spacing.xl },
+  statDot: { alignItems: 'center', gap: 5 },
+  statDotMark: { width: 8, height: 8, borderRadius: 4 },
+  statDotLabel: { fontSize: FontSize.xs, color: 'rgba(255,255,255,0.4)' },
+  statDotValue: { fontSize: FontSize.md, fontWeight: '700', color: 'rgba(255,255,255,0.9)' },
 
-  // ── 모드 / 책 선택 ──
   section: { width: '100%', gap: Spacing.sm },
   sectionLabel: { fontSize: FontSize.xs, fontWeight: '700', color: 'rgba(255,255,255,0.4)', letterSpacing: 1 },
+
   modeRow: { flexDirection: 'row', gap: Spacing.sm },
   modeBtn: {
     flex: 1, paddingVertical: 12, borderRadius: Radius.md, alignItems: 'center',
@@ -400,24 +342,23 @@ const styles = StyleSheet.create({
   nowReadingDot: { width: 6, height: 6, borderRadius: 3 },
   nowReadingText: { fontSize: FontSize.sm, color: 'rgba(255,255,255,0.6)', flex: 1 },
 
-  // ── 컨트롤 버튼 ──
   controls: { width: '100%', gap: Spacing.sm },
   btnStart: { backgroundColor: Colors.primary, borderRadius: Radius.full, paddingVertical: 18, alignItems: 'center' },
   btnStartText: { color: '#fff', fontWeight: '700', fontSize: FontSize.lg },
   btnRow: { flexDirection: 'row', gap: Spacing.sm },
   btnPause: {
-    flex: 1, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: Radius.full,
-    paddingVertical: 18, alignItems: 'center',
+    flex: 1, backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: Radius.full, paddingVertical: 18, alignItems: 'center',
   },
   btnPauseText: { color: 'rgba(255,255,255,0.85)', fontWeight: '600', fontSize: FontSize.md },
   btnResume: { flex: 1, backgroundColor: Colors.primary, borderRadius: Radius.full, paddingVertical: 18, alignItems: 'center' },
   btnStop: {
-    flex: 1, backgroundColor: 'rgba(227,49,49,0.25)', borderRadius: Radius.full,
-    paddingVertical: 18, alignItems: 'center', borderWidth: 1, borderColor: Colors.red,
+    flex: 1, backgroundColor: 'rgba(227,49,49,0.25)',
+    borderRadius: Radius.full, paddingVertical: 18, alignItems: 'center',
+    borderWidth: 1, borderColor: Colors.red,
   },
   btnStopText: { color: Colors.red, fontWeight: '700', fontSize: FontSize.md },
 
-  // ── 모달 ──
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', justifyContent: 'flex-end' },
   modalCard: {
     backgroundColor: '#1A1D2E', borderTopLeftRadius: Radius.lg, borderTopRightRadius: Radius.lg,
