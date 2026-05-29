@@ -79,7 +79,7 @@ export default function LibraryScreen() {
         ))}
       </ScrollView>
 
-      <ScrollView contentContainerStyle={styles.scroll}>
+      <ScrollView style={styles.flex1} contentContainerStyle={styles.scroll}>
         {/* 독서 현황 — 중앙 정렬, 1.5배 */}
         {items.length >= 2 && (
           <View style={styles.chartCard}>
@@ -203,6 +203,7 @@ const styles = StyleSheet.create({
   addBtn:     { backgroundColor: Colors.primary, borderRadius: Radius.full, paddingVertical: 8, paddingHorizontal: 16 },
   addBtnText: { fontSize: FontSize.sm, fontWeight: '600', color: '#fff' },
 
+  flex1: { flex: 1 },
   tabScroll: { flexGrow: 0 },
   tabRow:    { paddingHorizontal: Spacing.md, gap: Spacing.sm, paddingBottom: Spacing.sm },
   tab: {
