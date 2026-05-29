@@ -147,9 +147,9 @@ export default function TimerScreen() {
 
         {/* 일일 목표 요약 */}
         <View style={styles.statsRow}>
-          <StatDot color={Colors.primary} label="목표 시간"   current={`${todayMin}분`}  goal={`목표 ${dailyGoalMinutes}분`} />
-          <StatDot color={Colors.green}   label="세션"        current={`${Math.round(elapsedSeconds / 60)}분`} />
-          <StatDot color={Colors.purple}  label="목표 페이지" current={`${todayPg}p`}    goal={`목표 ${dailyGoalPages}p`} />
+          <StatDot color={Colors.primary} label="오늘 독서"  current={`${todayMin}분`}  goal={`목표 ${dailyGoalMinutes}분`} />
+          <StatDot color={Colors.green}   label="이번 세션"  current={`${Math.round(elapsedSeconds / 60)}분`} />
+          <StatDot color={Colors.purple}  label="오늘 페이지" current={`${todayPg}p`}   goal={`목표 ${dailyGoalPages}p`} />
         </View>
 
         {/* 모드 선택 */}
