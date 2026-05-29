@@ -433,18 +433,17 @@ const styles = StyleSheet.create({
   // ── 박스 내부 공통 레이아웃 (좌30% 라벨 + 우70% 내용) ──
   boxInner: { flexDirection: 'row', flex: 1, gap: Spacing.sm },
 
-  // 좌 30%: 아이콘 + 라벨
+  // 좌 50%: 아이콘 + 라벨
   labelCol: {
-    width: '30%', alignItems: 'flex-start', justifyContent: 'flex-start', gap: 6,
+    flex: 1, alignItems: 'flex-start', justifyContent: 'flex-start', gap: 6,
   },
   labelEmoji: { fontSize: 26 },
   labelText: {
-    fontSize: FontSize.xs, fontWeight: '700', color: Colors.textSub,
-    lineHeight: 16, flexShrink: 1,
+    fontSize: FontSize.md, fontWeight: '700', color: Colors.text, lineHeight: 22,
   },
   labelAdd: { fontSize: FontSize.xl, fontWeight: '700', color: Colors.primary, lineHeight: 22 },
 
-  // 우 70%: 실제 내용
+  // 우 50%: 실제 내용
   dataCol: { flex: 1, gap: Spacing.sm, justifyContent: 'center' },
 
   // ── 지금 읽는 책 내용 ──
