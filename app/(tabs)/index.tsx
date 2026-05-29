@@ -1,7 +1,8 @@
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
+import * as Location from 'expo-location';
 import { Colors, Spacing, FontSize, Radius, Shadow } from '../../src/constants/tokens';
 import { useShelfStore } from '../../src/store/shelfStore';
 import { useSessionStore } from '../../src/store/sessionStore';
@@ -29,17 +30,66 @@ function getTodayStr(): string {
 
 function getGreeting(): { text: string; emoji: string } {
   const hour = new Date().getHours();
-  if (hour >= 4  && hour < 6)  return { text: '일찍 일어나셨네요',   emoji: '🌅' };
-  if (hour >= 6  && hour < 11) return { text: '좋은 아침이에요',     emoji: '☀️' };
-  if (hour >= 11 && hour < 14) return { text: '점심 시간이에요',     emoji: '🌤' };
-  if (hour >= 14 && hour < 18) return { text: '좋은 오후예요',       emoji: '📖' };
+  if (hour >= 4  && hour < 6)  return { text: '일찍 일어나셨네요',    emoji: '🌅' };
+  if (hour >= 6  && hour < 11) return { text: '좋은 아침이에요',      emoji: '☀️' };
+  if (hour >= 11 && hour < 14) return { text: '점심 시간이에요',      emoji: '🌤' };
+  if (hour >= 14 && hour < 18) return { text: '좋은 오후예요',        emoji: '📖' };
   if (hour >= 18 && hour < 21) return { text: '오늘 하루 어떠셨나요', emoji: '🌇' };
-  return { text: '오늘도 수고하셨어요',  emoji: '🌙' };
+  return { text: '오늘도 수고하셨어요', emoji: '🌙' };
 }
 
 function getTodayLabel(): string {
   const d = new Date();
-  return `${d.getMonth() + 1}월 ${d.getDate()}일 ${WEEKDAY_KO[d.getDay()]}요일`;
+  return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${WEEKDAY_KO[d.getDay()]}요일`;
+}
+
+// WMO 날씨 코드 → 이모지 + 한국어
+function decodeWeather(code: number): { emoji: string; label: string } {
+  if (code === 0)              return { emoji: '☀️',  label: '맑음' };
+  if (code <= 2)               return { emoji: '🌤',  label: '구름 조금' };
+  if (code === 3)              return { emoji: '☁️',  label: '흐림' };
+  if (code <= 48)              return { emoji: '🌫',  label: '안개' };
+  if (code <= 55)              return { emoji: '🌦',  label: '이슬비' };
+  if (code <= 65)              return { emoji: '🌧',  label: '비' };
+  if (code <= 77)              return { emoji: '❄️',  label: '눈' };
+  if (code <= 82)              return { emoji: '🌩',  label: '소나기' };
+  if (code <= 86)              return { emoji: '🌨',  label: '눈보라' };
+  return                              { emoji: '⛈',  label: '뇌우' };
+}
+
+interface WeatherInfo {
+  temp: number;
+  emoji: string;
+  label: string;
+}
+
+function useWeather(): WeatherInfo | null {
+  const [weather, setWeather] = useState<WeatherInfo | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') return;
+        const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Low });
+        const { latitude, longitude } = loc.coords;
+        const res = await fetch(
+          `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&timezone=auto`
+        );
+        const data = await res.json();
+        if (cancelled) return;
+        const temp = Math.round(data.current.temperature_2m);
+        const { emoji, label } = decodeWeather(data.current.weather_code);
+        setWeather({ temp, emoji, label });
+      } catch {
+        // 날씨 로드 실패 시 표시 안함
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  return weather;
 }
 
 export default function HomeScreen() {
@@ -58,8 +108,9 @@ export default function HomeScreen() {
   const weekDays = getThisWeekDays();
   const todayStr = getTodayStr();
 
-  const greeting  = useMemo(() => getGreeting(), []);
+  const greeting   = useMemo(() => getGreeting(), []);
   const todayLabel = useMemo(() => getTodayLabel(), []);
+  const weather    = useWeather();
 
   const goalDone = todayMin >= dailyGoalMinutes && todayPg >= dailyGoalPages;
 
@@ -81,23 +132,37 @@ export default function HomeScreen() {
 
         {/* 헤더 */}
         <View style={styles.header}>
-          <View style={{ flex: 1 }}>
+          {/* 좌측: 날짜 + 날씨 */}
+          <View style={styles.headerLeft}>
             <Text style={styles.todayLabel}>{todayLabel}</Text>
-            <Text style={styles.greeting}>
-              {greeting.text} {greeting.emoji}
-            </Text>
+            {weather ? (
+              <View style={styles.weatherRow}>
+                <Text style={styles.weatherEmoji}>{weather.emoji}</Text>
+                <Text style={styles.weatherText}>{weather.label} · {weather.temp}°C</Text>
+              </View>
+            ) : (
+              <View style={styles.weatherRow}>
+                <Text style={styles.weatherText}>날씨 불러오는 중...</Text>
+              </View>
+            )}
           </View>
-          {items.length === 0 && (
-            <TouchableOpacity
-              style={styles.demoBtn}
-              onPress={() => {
-                seedDemoData();
-                Alert.alert('데모 데이터 추가됨', '샘플 책·세션·문장이 추가됐어요!');
-              }}
-            >
-              <Text style={styles.demoBtnText}>데모 채우기</Text>
-            </TouchableOpacity>
-          )}
+
+          {/* 우측: 인사말 + 데모버튼 */}
+          <View style={styles.headerRight}>
+            <Text style={styles.greeting}>{greeting.emoji}</Text>
+            <Text style={styles.greetingText}>{greeting.text}</Text>
+            {items.length === 0 && (
+              <TouchableOpacity
+                style={styles.demoBtn}
+                onPress={() => {
+                  seedDemoData();
+                  Alert.alert('데모 데이터 추가됨', '샘플 책·세션·문장이 추가됐어요!');
+                }}
+              >
+                <Text style={styles.demoBtnText}>데모 채우기</Text>
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
 
         {/* 오늘의 목표 */}
@@ -171,7 +236,6 @@ export default function HomeScreen() {
                       </View>
                     )}
                   </View>
-                  {/* 빠른 타이머 시작 */}
                   <TouchableOpacity
                     style={[styles.startBtn, isTimerRunning && styles.startBtnActive]}
                     onPress={() => handleQuickStart(item.id, item.currentPage)}
@@ -272,15 +336,33 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.bg },
   scroll: { padding: Spacing.md, gap: Spacing.lg, paddingBottom: 80 },
 
-  header: { paddingTop: Spacing.sm, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
-  todayLabel: { fontSize: FontSize.sm, fontWeight: '600', color: Colors.textSub, marginBottom: 4 },
-  greeting: { fontSize: FontSize.xl, fontWeight: '700', color: Colors.text },
+  // ── 헤더 ──
+  header: {
+    paddingTop: Spacing.sm,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    gap: Spacing.md,
+  },
+  headerLeft: { flex: 1, gap: 6 },
+  todayLabel: {
+    fontSize: FontSize.md, fontWeight: '700', color: Colors.text,
+  },
+  weatherRow: { flexDirection: 'row', alignItems: 'center', gap: 5 },
+  weatherEmoji: { fontSize: FontSize.md },
+  weatherText: { fontSize: FontSize.sm, color: Colors.textSub, fontWeight: '500' },
+
+  headerRight: { alignItems: 'flex-end', gap: 4 },
+  greeting: { fontSize: 28 },
+  greetingText: { fontSize: FontSize.sm, fontWeight: '600', color: Colors.textSub, textAlign: 'right' },
   demoBtn: {
     backgroundColor: Colors.primaryLight, borderRadius: Radius.full,
-    paddingVertical: 6, paddingHorizontal: 12, borderWidth: 1, borderColor: Colors.primaryMid,
+    paddingVertical: 5, paddingHorizontal: 10, borderWidth: 1, borderColor: Colors.primaryMid,
+    marginTop: 4,
   },
   demoBtnText: { fontSize: FontSize.xs, fontWeight: '600', color: Colors.primary },
 
+  // ── 목표 카드 ──
   goalCard: {
     backgroundColor: Colors.surface, borderRadius: Radius.md,
     padding: Spacing.md, ...Shadow.card,
@@ -300,11 +382,13 @@ const styles = StyleSheet.create({
   goalLabel: { fontSize: FontSize.xs, color: Colors.textMuted },
   goalValue: { fontSize: FontSize.md, fontWeight: '600', color: Colors.text },
 
+  // ── 공통 섹션 ──
   section: { gap: Spacing.sm },
   sectionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   sectionTitle: { fontSize: FontSize.md, fontWeight: '700', color: Colors.text },
   sectionAction: { fontSize: FontSize.sm, fontWeight: '600', color: Colors.primary },
 
+  // ── 빈 서재 ──
   emptyCard: {
     backgroundColor: Colors.surface, borderRadius: Radius.md, padding: Spacing.xl,
     alignItems: 'center', borderWidth: 1, borderColor: Colors.border,
@@ -314,10 +398,12 @@ const styles = StyleSheet.create({
   emptyText: { fontSize: FontSize.sm, color: Colors.textSub, fontWeight: '500' },
   emptyHint: { fontSize: FontSize.xs, color: Colors.primary, fontWeight: '600' },
 
+  // ── 읽는 책 카드 ──
   readingCard: {
     flexDirection: 'row', backgroundColor: Colors.surface,
     borderRadius: Radius.md, padding: Spacing.md, gap: Spacing.md,
     ...Shadow.card, alignItems: 'center',
+    borderWidth: 1, borderColor: Colors.border,
   },
   readingInfo: { flex: 1, gap: 4 },
   readingTitle: { fontSize: FontSize.md, fontWeight: '700', color: Colors.text },
@@ -336,6 +422,7 @@ const styles = StyleSheet.create({
   startBtnIcon: { fontSize: 14, color: '#fff' },
   startBtnText: { fontSize: FontSize.xs, fontWeight: '700', color: '#fff' },
 
+  // ── AI 코치 카드 ──
   coachCard: {
     flexDirection: 'row', alignItems: 'center',
     backgroundColor: Colors.surface, borderRadius: Radius.md,
@@ -345,14 +432,15 @@ const styles = StyleSheet.create({
   coachLeft: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   coachIconWrap: {
     width: 40, height: 40, borderRadius: 12,
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: Colors.primaryLight,
     alignItems: 'center', justifyContent: 'center',
   },
   coachIcon: { fontSize: 20 },
-  coachTitle: { fontSize: FontSize.md, fontWeight: '700', color: '#fff' },
-  coachSub: { fontSize: FontSize.xs, color: 'rgba(255,255,255,0.55)', marginTop: 2 },
+  coachTitle: { fontSize: FontSize.md, fontWeight: '700', color: Colors.text },
+  coachSub: { fontSize: FontSize.xs, color: Colors.textSub, marginTop: 2 },
   coachArrow: { fontSize: 22, color: Colors.primary, fontWeight: '700' },
 
+  // ── AI 추천 배너 ──
   aiBanner: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
     backgroundColor: Colors.primaryLight, borderRadius: Radius.md, padding: Spacing.md, ...Shadow.card,
@@ -364,14 +452,16 @@ const styles = StyleSheet.create({
   aiBannerSub: { fontSize: FontSize.xs, color: Colors.textSub, marginTop: 2 },
   aiBannerArrow: { fontSize: 22, color: Colors.primary, fontWeight: '700' },
 
+  // ── 이번 주 독서 ──
   weekCard: {
     backgroundColor: Colors.surface, borderRadius: Radius.md,
     padding: Spacing.md, ...Shadow.card,
+    borderWidth: 1, borderColor: Colors.border,
   },
   weekRow: { flexDirection: 'row', justifyContent: 'space-between' },
   dayDot: { alignItems: 'center', gap: 6, flex: 1 },
   dot: {
-    width: 34, height: 34, borderRadius: 17,
+    width: 36, height: 36, borderRadius: 18,
     backgroundColor: Colors.border,
     alignItems: 'center', justifyContent: 'center',
   },
