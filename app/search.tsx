@@ -5,7 +5,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useState, useCallback } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { Colors, Spacing, FontSize, Radius, Shadow } from '../src/constants/tokens';
 import { searchBooks } from '../src/api/books';
 import { useShelfStore } from '../src/store/shelfStore';
@@ -18,11 +18,23 @@ export default function SearchScreen() {
   const addBook = useShelfStore((s) => s.addBook);
   const shelfItems = useShelfStore((s) => s.items);
 
-  const { data, isFetching } = useQuery({
+  const {
+    data,
+    isFetching,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery({
     queryKey: ['bookSearch', submitted],
-    queryFn: () => searchBooks(submitted),
+    queryFn: ({ pageParam = 1 }) => searchBooks(submitted, pageParam as number),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.isEnd ? undefined : allPages.length + 1,
     enabled: submitted.length > 0,
   });
+
+  const allBooks = data?.pages.flatMap((p) => p.books) ?? [];
+  const total = data?.pages[0]?.total ?? 0;
 
   const handleSearch = useCallback(() => {
     if (query.trim()) setSubmitted(query.trim());
@@ -34,6 +46,10 @@ export default function SearchScreen() {
   }, [addBook, router]);
 
   const inShelf = (isbn: string) => shelfItems.some((i) => i.book.isbn === isbn);
+
+  const handleEndReached = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -60,23 +76,45 @@ export default function SearchScreen() {
         </TouchableOpacity>
       </View>
 
-      {isFetching && (
+      {/* 검색 결과 수 */}
+      {submitted.length > 0 && !isFetching && allBooks.length > 0 && (
+        <View style={styles.resultMeta}>
+          <Text style={styles.resultMetaText}>
+            "{submitted}" 검색 결과 · {total.toLocaleString()}건
+          </Text>
+        </View>
+      )}
+
+      {/* 첫 로딩 */}
+      {isFetching && !isFetchingNextPage && (
         <View style={styles.loadingWrap}>
           <ActivityIndicator color={Colors.primary} />
         </View>
       )}
 
-      {!isFetching && data && (
+      {!isFetching && !data && (
+        <View style={styles.hint}>
+          <Text style={styles.hintText}>읽고 싶은 책을 검색해보세요 📖</Text>
+        </View>
+      )}
+
+      {(allBooks.length > 0 || (data && !isFetching)) && (
         <FlatList
-          data={data.books}
+          data={allBooks}
           keyExtractor={(item) => item.isbn}
           contentContainerStyle={styles.list}
+          onEndReached={handleEndReached}
+          onEndReachedThreshold={0.3}
           renderItem={({ item }) => (
             <SearchResultCard
               book={item}
               alreadyAdded={inShelf(item.isbn)}
               onAdd={handleAdd}
-              onDetail={() => router.push(`/book-preview/${encodeURIComponent(item.isbn)}?title=${encodeURIComponent(item.title)}&author=${encodeURIComponent(item.author)}&cover=${encodeURIComponent(item.coverUrl ?? '')}`)}
+              onDetail={() =>
+                router.push(
+                  `/book-preview/${encodeURIComponent(item.isbn)}?title=${encodeURIComponent(item.title)}&author=${encodeURIComponent(item.author)}&cover=${encodeURIComponent(item.coverUrl ?? '')}&publisher=${encodeURIComponent(item.publisher ?? '')}&publishedAt=${encodeURIComponent(item.publishedAt ?? '')}`
+                )
+              }
             />
           )}
           ListEmptyComponent={
@@ -84,13 +122,21 @@ export default function SearchScreen() {
               <Text style={styles.emptyText}>검색 결과가 없어요</Text>
             </View>
           }
+          ListFooterComponent={
+            isFetchingNextPage ? (
+              <View style={styles.footerLoading}>
+                <ActivityIndicator color={Colors.primary} size="small" />
+                <Text style={styles.footerLoadingText}>더 불러오는 중...</Text>
+              </View>
+            ) : hasNextPage ? (
+              <TouchableOpacity style={styles.loadMoreBtn} onPress={() => fetchNextPage()}>
+                <Text style={styles.loadMoreText}>더 보기</Text>
+              </TouchableOpacity>
+            ) : allBooks.length > 0 ? (
+              <Text style={styles.endText}>모든 결과를 불러왔어요</Text>
+            ) : null
+          }
         />
-      )}
-
-      {!isFetching && !data && (
-        <View style={styles.hint}>
-          <Text style={styles.hintText}>읽고 싶은 책을 검색해보세요 📖</Text>
-        </View>
       )}
     </SafeAreaView>
   );
@@ -157,7 +203,7 @@ const styles = StyleSheet.create({
   backBtn: { padding: 4 },
   backText: { fontSize: FontSize.sm, color: Colors.primary, fontWeight: '600' },
   screenTitle: { fontSize: FontSize.lg, fontWeight: '700', color: Colors.text },
-  searchRow: { flexDirection: 'row', gap: Spacing.sm, paddingHorizontal: Spacing.md, paddingBottom: Spacing.md },
+  searchRow: { flexDirection: 'row', gap: Spacing.sm, paddingHorizontal: Spacing.md, paddingBottom: Spacing.sm },
   input: {
     flex: 1,
     backgroundColor: Colors.surface,
@@ -176,12 +222,30 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   searchBtnText: { color: '#fff', fontWeight: '700', fontSize: FontSize.sm },
+
+  resultMeta: { paddingHorizontal: Spacing.md, paddingBottom: Spacing.sm },
+  resultMetaText: { fontSize: FontSize.xs, color: Colors.textMuted },
+
   loadingWrap: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   list: { padding: Spacing.md, gap: Spacing.sm, paddingBottom: 40 },
   empty: { alignItems: 'center', padding: Spacing.xl },
   emptyText: { fontSize: FontSize.md, color: Colors.textMuted },
   hint: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   hintText: { fontSize: FontSize.md, color: Colors.textMuted },
+
+  footerLoading: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, padding: Spacing.md },
+  footerLoadingText: { fontSize: FontSize.sm, color: Colors.textMuted },
+  loadMoreBtn: {
+    margin: Spacing.md,
+    paddingVertical: 12,
+    borderRadius: Radius.full,
+    borderWidth: 1,
+    borderColor: Colors.primary,
+    alignItems: 'center',
+  },
+  loadMoreText: { fontSize: FontSize.sm, fontWeight: '600', color: Colors.primary },
+  endText: { fontSize: FontSize.xs, color: Colors.textMuted, textAlign: 'center', padding: Spacing.md },
+
   card: {
     flexDirection: 'row',
     backgroundColor: Colors.surface,

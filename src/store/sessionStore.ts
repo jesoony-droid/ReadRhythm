@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type TimerMode = 'free' | 'pomodoro';
+export type PlanKey = 'free' | 'premium' | 'team';
 
 export interface Session {
   id: string;
@@ -38,6 +39,8 @@ function isSameDateStr(iso: string, dateStr: string): boolean {
 
 interface SessionState {
   sessions: Session[];
+  plan: PlanKey;
+  setPlan: (plan: PlanKey) => void;
   // ── 사용자 목표 (하드코딩 제거) ──────────────────────────
   dailyGoalMinutes: number;
   dailyGoalPages: number;
@@ -55,6 +58,8 @@ export const useSessionStore = create<SessionState>()(
   persist(
     (set, get) => ({
       sessions: [],
+      plan: 'free',
+      setPlan: (plan) => set({ plan }),
       dailyGoalMinutes: DEFAULT_GOAL_MIN,
       dailyGoalPages: DEFAULT_GOAL_PAGES,
 
@@ -131,6 +136,7 @@ export const useSessionStore = create<SessionState>()(
       // 함수는 JSON 직렬화 불가 → 데이터만 저장
       partialize: (state) => ({
         sessions: state.sessions,
+        plan: state.plan,
         dailyGoalMinutes: state.dailyGoalMinutes,
         dailyGoalPages: state.dailyGoalPages,
       }),
