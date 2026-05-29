@@ -4,12 +4,19 @@ import { useQuotesStore } from '../store/quotesStore';
 import { useXpStore } from '../store/xpStore';
 import { useBadgeStore } from '../store/badgeStore';
 
+const DEMO_ISBNS = new Set(['demo1', 'demo2', 'demo3', '9788936432850', '9788936434120', '9788954651135']);
+
 export function seedDemoData() {
-  const { addBook } = useShelfStore.getState();
+  const { addBook, items, removeItem } = useShelfStore.getState();
   const { addSession } = useSessionStore.getState();
   const { addQuote } = useQuotesStore.getState();
   const { addXp } = useXpStore.getState();
   const { unlock } = useBadgeStore.getState();
+
+  // 기존 데모 책 제거 (이전 버전 포함)
+  items
+    .filter((i) => DEMO_ISBNS.has(i.book.isbn))
+    .forEach((i) => removeItem(i.id));
 
   // 책 3권 추가
   addBook({

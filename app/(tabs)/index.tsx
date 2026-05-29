@@ -194,17 +194,15 @@ export default function HomeScreen() {
               <Text style={styles.greetingText}>{greeting.text}</Text>
             </View>
             <Text style={styles.quoteText}>"{dailyQuote}"</Text>
-            {items.length === 0 && (
-              <TouchableOpacity
-                style={styles.demoBtn}
-                onPress={() => {
-                  seedDemoData();
-                  Alert.alert('데모 데이터 추가됨', '샘플 책·세션·문장이 추가됐어요!');
-                }}
-              >
-                <Text style={styles.demoBtnText}>데모 채우기</Text>
-              </TouchableOpacity>
-            )}
+            <TouchableOpacity
+              style={styles.demoBtn}
+              onPress={() => {
+                seedDemoData();
+                Alert.alert('데모 데이터', '샘플 책·세션·문장이 추가됐어요!');
+              }}
+            >
+              <Text style={styles.demoBtnText}>데모 채우기</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
