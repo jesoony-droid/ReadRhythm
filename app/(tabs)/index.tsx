@@ -43,6 +43,45 @@ function getTodayLabel(): string {
   return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${WEEKDAY_KO[d.getDay()]}요일`;
 }
 
+const DAILY_QUOTES = [
+  '책 속에 길이 있다.',
+  '오늘 읽은 한 페이지가 내일의 나를 만든다.',
+  '독서는 마음의 여행이다.',
+  '좋은 책 한 권은 천 명의 친구와 같다.',
+  '지식에 투자하는 것이 최고의 이자를 낳는다.',
+  '배움에는 끝이 없다.',
+  '꾸준함이 재능을 이긴다.',
+  '매일 조금씩, 그것이 비결이다.',
+  '생각하는 대로 살지 않으면, 사는 대로 생각하게 된다.',
+  '한 권의 책이 하나의 세계를 열어준다.',
+  '오늘의 나는 어제의 독서가 만들었다.',
+  '작은 습관이 큰 변화를 만든다.',
+  '지금 이 순간이 남은 인생 중 가장 젊은 순간이다.',
+  '독서 없이 성취된 위대함은 없다.',
+  '책은 우리가 잠든 사이 미래를 꿈꾸게 한다.',
+  '천 리 길도 한 걸음부터.',
+  '지식은 나눌수록 커진다.',
+  '모든 독자는 자신만의 책을 읽는다.',
+  '독서는 가장 조용한 혁명이다.',
+  '책은 꿈을 담는 그릇이다.',
+  '오늘 걷지 않으면 내일 뛰어야 한다.',
+  '당신의 오늘이 내일의 당신을 만든다.',
+  '책을 읽는다는 것은 자신의 미래를 만드는 일이다.',
+  '시작이 반이다.',
+  '완독 한 권이 세상을 보는 눈을 하나 더 갖는 것이다.',
+  '독서는 완성된 사람을 만든다.',
+  '좋은 습관은 좋은 삶을 만든다.',
+  '책과 함께라면 어디서든 여행할 수 있다.',
+  '오늘의 독서가 내일의 나를 밝힌다.',
+  '조금 느려도 괜찮다. 멈추지만 않으면 된다.',
+];
+
+function getDailyQuote(): string {
+  const d = new Date();
+  const dayOfYear = Math.floor((d.getTime() - new Date(d.getFullYear(), 0, 0).getTime()) / 86400000);
+  return DAILY_QUOTES[dayOfYear % DAILY_QUOTES.length];
+}
+
 // WMO 날씨 코드 → 이모지 + 한국어
 function decodeWeather(code: number): { emoji: string; label: string } {
   if (code === 0)              return { emoji: '☀️',  label: '맑음' };
@@ -110,6 +149,7 @@ export default function HomeScreen() {
 
   const greeting   = useMemo(() => getGreeting(), []);
   const todayLabel = useMemo(() => getTodayLabel(), []);
+  const dailyQuote = useMemo(() => getDailyQuote(), []);
   const weather    = useWeather();
 
   const goalDone = todayMin >= dailyGoalMinutes && todayPg >= dailyGoalPages;
@@ -147,10 +187,13 @@ export default function HomeScreen() {
             )}
           </View>
 
-          {/* 우측: 인사말 + 데모버튼 */}
+          {/* 우측: 인사말 + 추천 문구 + 데모버튼 */}
           <View style={styles.headerRight}>
-            <Text style={styles.greeting}>{greeting.emoji}</Text>
-            <Text style={styles.greetingText}>{greeting.text}</Text>
+            <View style={styles.greetingWrap}>
+              <Text style={styles.greetingEmoji}>{greeting.emoji}</Text>
+              <Text style={styles.greetingText}>{greeting.text}</Text>
+            </View>
+            <Text style={styles.quoteText}>"{dailyQuote}"</Text>
             {items.length === 0 && (
               <TouchableOpacity
                 style={styles.demoBtn}
@@ -352,9 +395,14 @@ const styles = StyleSheet.create({
   weatherEmoji: { fontSize: FontSize.md },
   weatherText: { fontSize: FontSize.sm, color: Colors.textSub, fontWeight: '500' },
 
-  headerRight: { alignItems: 'flex-end', gap: 4 },
-  greeting: { fontSize: 28 },
-  greetingText: { fontSize: FontSize.sm, fontWeight: '600', color: Colors.textSub, textAlign: 'right' },
+  headerRight: { alignItems: 'flex-end', gap: 6, flex: 1 },
+  greetingWrap: { flexDirection: 'row', alignItems: 'center', gap: 6, justifyContent: 'flex-end' },
+  greetingEmoji: { fontSize: 32 },
+  greetingText: { fontSize: 28, fontWeight: '800', color: Colors.text, textAlign: 'right' },
+  quoteText: {
+    fontSize: FontSize.sm, color: Colors.textSub, textAlign: 'right',
+    fontStyle: 'italic', lineHeight: 20, opacity: 0.85,
+  },
   demoBtn: {
     backgroundColor: Colors.primaryLight, borderRadius: Radius.full,
     paddingVertical: 5, paddingHorizontal: 10, borderWidth: 1, borderColor: Colors.primaryMid,
