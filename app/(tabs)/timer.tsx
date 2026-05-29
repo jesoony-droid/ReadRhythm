@@ -147,9 +147,9 @@ export default function TimerScreen() {
 
         {/* 일일 목표 요약 */}
         <View style={styles.statsRow}>
-          <StatDot color={Colors.primary} label="목표 시간" value={`${todayMin}/${dailyGoalMinutes}분`} />
-          <StatDot color={Colors.green}   label="세션"      value={`${Math.round(elapsedSeconds / 60)}분`} />
-          <StatDot color={Colors.purple}  label="목표 페이지" value={`${todayPg}/${dailyGoalPages}p`} />
+          <StatDot color={Colors.primary} label="목표 시간"   current={`${todayMin}분`}  goal={`목표 ${dailyGoalMinutes}분`} />
+          <StatDot color={Colors.green}   label="세션"        current={`${Math.round(elapsedSeconds / 60)}분`} />
+          <StatDot color={Colors.purple}  label="목표 페이지" current={`${todayPg}p`}    goal={`목표 ${dailyGoalPages}p`} />
         </View>
 
         {/* 모드 선택 */}
@@ -269,12 +269,15 @@ export default function TimerScreen() {
   );
 }
 
-function StatDot({ color, label, value }: { color: string; label: string; value: string }) {
+function StatDot({ color, label, current, goal }: {
+  color: string; label: string; current: string; goal?: string;
+}) {
   return (
     <View style={styles.statDot}>
       <View style={[styles.statDotMark, { backgroundColor: color }]} />
       <Text style={styles.statDotLabel}>{label}</Text>
-      <Text style={styles.statDotValue}>{value}</Text>
+      <Text style={[styles.statDotValue, { color }]}>{current}</Text>
+      {goal && <Text style={styles.statDotGoal}>{goal}</Text>}
     </View>
   );
 }
@@ -309,6 +312,7 @@ const styles = StyleSheet.create({
   statDotMark: { width: 12, height: 12, borderRadius: 6 },
   statDotLabel: { fontSize: FontSize.md, color: 'rgba(255,255,255,0.5)', fontWeight: '500' },
   statDotValue: { fontSize: FontSize.xxl, fontWeight: '800', color: 'rgba(255,255,255,0.95)' },
+  statDotGoal:  { fontSize: FontSize.sm, color: 'rgba(255,255,255,0.35)', fontWeight: '500' },
 
   section: { width: '100%', gap: Spacing.sm },
   sectionLabel: { fontSize: FontSize.xs, fontWeight: '700', color: 'rgba(255,255,255,0.4)', letterSpacing: 1 },
