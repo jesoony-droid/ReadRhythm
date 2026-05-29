@@ -305,10 +305,10 @@ const styles = StyleSheet.create({
   timeLabel: { fontSize: FontSize.lg, color: 'rgba(255,255,255,0.5)', marginTop: 6, fontWeight: '500' },
 
   statsRow: { flexDirection: 'row', gap: Spacing.xl },
-  statDot: { alignItems: 'center', gap: 5 },
-  statDotMark: { width: 8, height: 8, borderRadius: 4 },
-  statDotLabel: { fontSize: FontSize.xs, color: 'rgba(255,255,255,0.4)' },
-  statDotValue: { fontSize: FontSize.md, fontWeight: '700', color: 'rgba(255,255,255,0.9)' },
+  statDot: { alignItems: 'center', gap: 8 },
+  statDotMark: { width: 12, height: 12, borderRadius: 6 },
+  statDotLabel: { fontSize: FontSize.md, color: 'rgba(255,255,255,0.5)', fontWeight: '500' },
+  statDotValue: { fontSize: FontSize.xxl, fontWeight: '800', color: 'rgba(255,255,255,0.95)' },
 
   section: { width: '100%', gap: Spacing.sm },
   sectionLabel: { fontSize: FontSize.xs, fontWeight: '700', color: 'rgba(255,255,255,0.4)', letterSpacing: 1 },
