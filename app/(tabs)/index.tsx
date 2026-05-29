@@ -373,11 +373,11 @@ const styles = StyleSheet.create({
   },
   headerLeft: { flex: 1, gap: 6 },
   todayLabel: {
-    fontSize: FontSize.md, fontWeight: '700', color: Colors.text,
+    fontSize: 32, fontWeight: '700', color: Colors.text,
   },
-  weatherRow: { flexDirection: 'row', alignItems: 'center', gap: 5 },
-  weatherEmoji: { fontSize: FontSize.md },
-  weatherText: { fontSize: FontSize.sm, color: Colors.textSub, fontWeight: '500' },
+  weatherRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  weatherEmoji: { fontSize: 24 },
+  weatherText: { fontSize: 22, color: Colors.textSub, fontWeight: '500' },
 
   headerRight: { alignItems: 'flex-end', gap: 6, flex: 1 },
   greetingWrap: { flexDirection: 'row', alignItems: 'center', gap: 6, justifyContent: 'flex-end' },
@@ -408,7 +408,7 @@ const styles = StyleSheet.create({
   boxReading: { minHeight: 180 },
   boxDone: { borderColor: Colors.green, borderWidth: 1.5 },
   boxHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  boxTitle: { fontSize: FontSize.sm, fontWeight: '700', color: Colors.textSub },
+  boxTitle: { fontSize: FontSize.md, fontWeight: '700', color: Colors.text },
   boxAction: { fontSize: FontSize.lg, fontWeight: '700', color: Colors.primary },
   doneBadge: { fontSize: 18 },
 
