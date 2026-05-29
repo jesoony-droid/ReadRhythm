@@ -1,6 +1,7 @@
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Pressable, TextInput, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import { Colors, Spacing, FontSize, Radius, Shadow } from '../../src/constants/tokens';
 import { useXpStore } from '../../src/store/xpStore';
 import { useSessionStore } from '../../src/store/sessionStore';
@@ -14,10 +15,25 @@ export default function ProfileScreen() {
   const totalXp = useXpStore((s) => s.totalXp);
   const levelInfo = getLevelInfo(totalXp);
   const { getMonthStats, getStreak, sessions } = useSessionStore();
+  const nickname = useSessionStore((s) => s.nickname);
+  const setNickname = useSessionStore((s) => s.setNickname);
   const shelfItems = useShelfStore((s) => s.items);
   const unlockedCount = useBadgeStore(
     (s) => s.badges.reduce((n, b) => n + (b.unlockedAt ? 1 : 0), 0)
   );
+
+  const [editingName, setEditingName] = useState(false);
+  const [nameInput, setNameInput] = useState(nickname);
+
+  function handleSaveName() {
+    const trimmed = nameInput.trim();
+    if (!trimmed) {
+      Alert.alert('닉네임을 입력해주세요');
+      return;
+    }
+    setNickname(trimmed);
+    setEditingName(false);
+  }
 
   const streak = getStreak();
   const doneBooks = shelfItems.filter((i) => i.status === 'DONE').length;
@@ -41,7 +57,31 @@ export default function ProfileScreen() {
             </View>
           </View>
           <View style={styles.profileInfo}>
-            <Text style={styles.nickname}>독서가</Text>
+            {editingName ? (
+              <View style={styles.nameEditRow}>
+                <TextInput
+                  style={styles.nameInput}
+                  value={nameInput}
+                  onChangeText={setNameInput}
+                  maxLength={12}
+                  autoFocus
+                  returnKeyType="done"
+                  onSubmitEditing={handleSaveName}
+                  onBlur={handleSaveName}
+                />
+                <TouchableOpacity onPress={handleSaveName} style={styles.nameSaveBtn}>
+                  <Text style={styles.nameSaveBtnText}>저장</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <TouchableOpacity
+                style={styles.nicknameRow}
+                onPress={() => { setNameInput(nickname); setEditingName(true); }}
+              >
+                <Text style={styles.nickname}>{nickname}</Text>
+                <Text style={styles.editHint}>✏️</Text>
+              </TouchableOpacity>
+            )}
             <Text style={styles.levelName}>{levelInfo.name}</Text>
 
             {/* XP 바 */}
@@ -238,7 +278,19 @@ const styles = StyleSheet.create({
   },
   levelBadgeText: { fontSize: FontSize.xs, fontWeight: '700', color: '#fff' },
   profileInfo: { flex: 1, gap: 4, justifyContent: 'center' },
+  nicknameRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   nickname: { fontSize: FontSize.lg, fontWeight: '700', color: Colors.text },
+  editHint: { fontSize: 14 },
+  nameEditRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  nameInput: {
+    flex: 1, fontSize: FontSize.lg, fontWeight: '700', color: Colors.text,
+    borderBottomWidth: 2, borderBottomColor: Colors.primary, paddingVertical: 2,
+  },
+  nameSaveBtn: {
+    backgroundColor: Colors.primary, borderRadius: Radius.full,
+    paddingVertical: 4, paddingHorizontal: 12,
+  },
+  nameSaveBtnText: { fontSize: FontSize.xs, fontWeight: '700', color: '#fff' },
   levelName: { fontSize: FontSize.sm, color: Colors.textSub },
   xpRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 6 },
   xpLabel: { fontSize: FontSize.xs, color: Colors.textMuted },

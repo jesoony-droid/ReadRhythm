@@ -41,6 +41,12 @@ interface SessionState {
   sessions: Session[];
   plan: PlanKey;
   setPlan: (plan: PlanKey) => void;
+  nickname: string;
+  setNickname: (name: string) => void;
+  hasOnboarded: boolean;
+  setHasOnboarded: (v: boolean) => void;
+  _hasHydrated: boolean;
+  setHasHydrated: (v: boolean) => void;
   // ── 사용자 목표 (하드코딩 제거) ──────────────────────────
   dailyGoalMinutes: number;
   dailyGoalPages: number;
@@ -60,6 +66,12 @@ export const useSessionStore = create<SessionState>()(
       sessions: [],
       plan: 'free',
       setPlan: (plan) => set({ plan }),
+      nickname: '독서가',
+      setNickname: (name) => set({ nickname: name }),
+      hasOnboarded: false,
+      setHasOnboarded: (v) => set({ hasOnboarded: v }),
+      _hasHydrated: false,
+      setHasHydrated: (v) => set({ _hasHydrated: v }),
       dailyGoalMinutes: DEFAULT_GOAL_MIN,
       dailyGoalPages: DEFAULT_GOAL_PAGES,
 
@@ -134,9 +146,14 @@ export const useSessionStore = create<SessionState>()(
       name: 'readrhythm-sessions',
       storage: createJSONStorage(() => AsyncStorage),
       // 함수는 JSON 직렬화 불가 → 데이터만 저장
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
       partialize: (state) => ({
         sessions: state.sessions,
         plan: state.plan,
+        nickname: state.nickname,
+        hasOnboarded: state.hasOnboarded,
         dailyGoalMinutes: state.dailyGoalMinutes,
         dailyGoalPages: state.dailyGoalPages,
       }),
