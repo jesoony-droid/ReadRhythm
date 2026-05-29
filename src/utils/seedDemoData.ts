@@ -13,16 +13,22 @@ export function seedDemoData() {
 
   // 책 3권 추가
   addBook({
-    id: 'demo1', isbn: 'demo1',
-    title: '아몬드', author: '손원평', coverUrl: undefined, publisher: '창비',
+    id: 'demo1', isbn: '9788936432850',
+    title: '아몬드', author: '손원평',
+    coverUrl: 'https://image.yes24.com/goods/70362482/XL',
+    publisher: '창비', totalPages: 264,
   }, 'DONE');
   addBook({
-    id: 'demo2', isbn: 'demo2',
-    title: '채식주의자', author: '한강', coverUrl: undefined, publisher: '창비',
+    id: 'demo2', isbn: '9788936434120',
+    title: '채식주의자', author: '한강',
+    coverUrl: 'https://image.yes24.com/goods/7543147/XL',
+    publisher: '창비', totalPages: 247,
   }, 'READING');
   addBook({
-    id: 'demo3', isbn: 'demo3',
-    title: '82년생 김지영', author: '조남주', coverUrl: undefined, publisher: '민음사',
+    id: 'demo3', isbn: '9788954651135',
+    title: '82년생 김지영', author: '조남주',
+    coverUrl: 'https://image.yes24.com/goods/42234212/XL',
+    publisher: '민음사', totalPages: 190,
   }, 'WANT');
 
   // 최근 7일 세션 추가
