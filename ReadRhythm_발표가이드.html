@@ -214,11 +214,13 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
 ══════════════════════════════════════════ -->
 <div class="cover">
   <div class="cover-top">
-    <div class="cv-tag">📚 발표 가이드 · 2026년 5월</div>
+    <div class="cv-tag">📚 발표 가이드 · 2026년 5월 29일</div>
     <div class="cv-ver-bar">
       <span class="cv-ver-v1">v1.0 · 12주 MVP</span>
       <span class="cv-ver-arrow">→</span>
       <span class="cv-ver-v2">v2.0 · AI 고도화 & UX 개선</span>
+      <span class="cv-ver-arrow">→</span>
+      <span style="border:1px solid #38bdf8;border-radius:6px;padding:3px 12px;color:#38bdf8;font-size:9pt;font-weight:700;background:rgba(56,189,248,.1);">v2.1 · 기능 완성도 개선</span>
     </div>
     <div class="cv-main">ReadRhythm<br><span>발표 가이드</span></div>
     <div class="cv-sub">AI 기반 독서 습관 트래커 — 개발 과정 & 데모 시연 스크립트</div>
@@ -232,6 +234,11 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
         <div class="cv-card-icon">✨</div>
         <div class="cv-card-title">v2.0 — 4종 신규 기능</div>
         <div class="cv-card-desc">AI 도서 담기 · 백엔드 통합<br>컨텍스트 바 · 5탭 재편</div>
+      </div>
+      <div class="cv-card" style="background:rgba(56,189,248,.1);border-color:#38bdf8;">
+        <div class="cv-card-icon">🚀</div>
+        <div class="cv-card-title" style="color:#7dd3fc;">v2.1 — 9종 추가 개선</div>
+        <div class="cv-card-desc">book-preview · 구독 플랜<br>온보딩 · 홈 UX · 도서 API</div>
       </div>
       <div class="cv-card">
         <div class="cv-card-icon">⏱</div>
@@ -361,6 +368,12 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
       <div class="rc-qa-q">📖 v2.0 데모 순서</div>
       <div class="rc-qa-a">
         AI사서 → 질문 전송 → 스크롤 ↓<br>→ "언급된 도서" 섹션 → "+ 담기" 클릭
+      </div>
+    </div>
+    <div class="rc-qa-item" style="background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);">
+      <div class="rc-qa-q" style="color:#38bdf8;">🚀 v2.1 데모 순서</div>
+      <div class="rc-qa-a">
+        홈(▶ 타이머 시작) → 검색(페이지네이션)<br>→ 책 상세(소개 표시) → 구독(플랜 선택)<br>→ 내정보(닉네임 ✏️ 편집)
       </div>
     </div>
     <div class="rc-qa-item">
@@ -756,8 +769,116 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
   <ul>
     <li>모르는 질문은 <b>"좋은 질문입니다. 현재는 구현되어 있지 않지만, 향후 계획에 포함되어 있습니다"</b>로 자연스럽게 전환</li>
     <li>기술적 질문이 너무 깊어지면 <b>"발표 후에 개별적으로 더 설명드려도 될까요?"</b>로 리디렉션</li>
-    <li>칭찬 질문에는 <b>구체적인 수치(5,910건, 12주, 30종 배지, v2.0 4종 개선)</b>를 언급해 신뢰도 높이기</li>
+    <li>칭찬 질문에는 <b>구체적인 수치(5,910건, 12주, 30종 배지, v2.0 4종·v2.1 9종 개선)</b>를 언급해 신뢰도 높이기</li>
   </ul>
+</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     v2.1 데모 슬라이드
+══════════════════════════════════════════ -->
+<div class="page">
+<div class="ver-section-header">
+  <span class="ver-label" style="background:#dbeafe;color:#1d4ed8;border:1px solid #93c5fd;">v2.1</span>
+  <h1 style="margin:0;padding:0;border:none;color:#1d4ed8;">v2.1 추가 개선 데모 — 9종 완성 (2026-05-29)</h1>
+</div>
+<div style="border-bottom:2.5px solid #3b82f6;margin-bottom:14px;"></div>
+
+<div class="slide-block" style="border-color:#93c5fd;">
+  <div class="slide-header" style="background:#1d4ed8;">
+    <div class="slide-num" style="background:#3b82f6;">A</div>
+    <div class="slide-title">A그룹 — 기능 완성도 3종</div>
+    <div class="slide-time" style="color:#bfdbfe;">⏱ 약 2분</div>
+  </div>
+  <div class="slide-body" style="background:#eff6ff;">
+    <div class="script" style="border-left-color:#3b82f6;">
+      "기존에 미완성이었던 세 화면을 완전히 구현했습니다. 검색 결과에서 책을 탭하면 이제 상세 정보 화면으로 이동하고, 구독 플랜 선택이 실제로 저장되며, 검색 결과가 페이지를 넘겨 계속 나옵니다."
+    </div>
+    <div class="demo-step">
+      <div class="demo-num" style="background:#3b82f6;">1</div>
+      <div class="demo-content">
+        <div class="demo-action" style="color:#1d4ed8;">검색 → 책 탭 → book-preview 화면</div>
+        <div class="demo-script">책 소개 섹션, 상태 라디오 선택(읽는 중/읽고 싶어요/완독), 담기 버튼 확인</div>
+      </div>
+    </div>
+    <div class="demo-step">
+      <div class="demo-num" style="background:#3b82f6;">2</div>
+      <div class="demo-content">
+        <div class="demo-action" style="color:#1d4ed8;">내정보 → Premium → "시작하기" 탭</div>
+        <div class="demo-script">월간/연간 토글 가격 변환, 확인 Alert, 플랜 변경 후 "✓ 현재 플랜" 초록 배지</div>
+      </div>
+    </div>
+    <div class="demo-step">
+      <div class="demo-num" style="background:#3b82f6;">3</div>
+      <div class="demo-content">
+        <div class="demo-action" style="color:#1d4ed8;">검색 → 스크롤 끝까지 내리기</div>
+        <div class="demo-script">스피너 → 다음 페이지 자동 로딩, 결과 건수 표시 확인</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide-block" style="border-color:#c4b5fd;">
+  <div class="slide-header" style="background:#7c3aed;">
+    <div class="slide-num" style="background:#a855f7;">B</div>
+    <div class="slide-title">B그룹 — UI/UX 개선 3종</div>
+    <div class="slide-time" style="color:#e9d5ff;">⏱ 약 2분</div>
+  </div>
+  <div class="slide-body" style="background:#f5f3ff;">
+    <div class="script" style="border-left-color:#7c3aed;background:#faf5ff;">
+      "앱을 처음 켤 때 온보딩으로 자연스럽게 안내하고, 홈에서 바로 타이머를 시작할 수 있게 됐습니다. 닉네임도 내 정보 화면에서 바로 수정할 수 있어요."
+    </div>
+    <div class="demo-step">
+      <div class="demo-num" style="background:#7c3aed;">1</div>
+      <div class="demo-content">
+        <div class="demo-action" style="color:#7c3aed;">앱 첫 실행 → 온보딩 3단계</div>
+        <div class="demo-script">환영 소개 → 닉네임 입력 → 목표 프리셋 선택(입문/기본/심화/도전) → 시작하기</div>
+      </div>
+    </div>
+    <div class="demo-step">
+      <div class="demo-num" style="background:#7c3aed;">2</div>
+      <div class="demo-content">
+        <div class="demo-action" style="color:#7c3aed;">홈 화면 → 읽는 책 카드 → ▶ 시작</div>
+        <div class="demo-script">해당 책으로 타이머 즉시 시작, 타이머 탭 이동 확인 / 시간대별 인사말 + 오늘 날짜</div>
+      </div>
+    </div>
+    <div class="demo-step">
+      <div class="demo-num" style="background:#7c3aed;">3</div>
+      <div class="demo-content">
+        <div class="demo-action" style="color:#7c3aed;">내정보 → 프로필 닉네임 ✏️ 탭</div>
+        <div class="demo-script">인라인 TextInput 전환 → 수정 → 저장, 앱 재시작 후에도 유지 확인</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide-block" style="border-color:#6ee7b7;">
+  <div class="slide-header" style="background:#047857;">
+    <div class="slide-num" style="background:#10b981;">C</div>
+    <div class="slide-title">C그룹 — 실제 API 연동</div>
+    <div class="slide-time" style="color:#a7f3d0;">⏱ 약 1분</div>
+  </div>
+  <div class="slide-body" style="background:#f0fdf4;">
+    <div class="script" style="border-left-color:#10b981;background:#f0fdf9;">
+      "도서 검색이 카카오·네이버 실제 API와 연동되어 수백만 권을 검색할 수 있습니다. API 키가 없어도 15종 샘플 데이터로 자동 폴백되고, 책 상세 화면에 책 소개도 표시됩니다."
+    </div>
+    <div class="demo-step">
+      <div class="demo-num" style="background:#10b981;">1</div>
+      <div class="demo-content">
+        <div class="demo-action" style="color:#047857;">검색 → 책 탭 → 책 소개 섹션 확인</div>
+        <div class="demo-script">API 연동 시: 실제 책 소개문 표시 / Mock 시: Mock 데이터 설명 표시</div>
+      </div>
+    </div>
+    <div class="tip-box" style="background:linear-gradient(135deg,#064e3b,#047857);margin-top:10px;">
+      <h3 style="color:#6ee7b7;">💡 API 키 설정 방법</h3>
+      <ul>
+        <li>카카오: developers.kakao.com → 앱 추가 → REST API 키 → Daum 검색 ON</li>
+        <li>네이버: developers.naver.com → 애플리케이션 등록 → 검색 API 선택</li>
+        <li>.env 파일에 EXPO_PUBLIC_KAKAO_API_KEY / EXPO_PUBLIC_NAVER_CLIENT_ID 설정</li>
+      </ul>
+    </div>
+  </div>
 </div>
 </div>
 
