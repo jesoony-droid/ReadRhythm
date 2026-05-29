@@ -16,8 +16,8 @@ const SIZE_H  = 290;
 // 링 간격: (a-b) 차이 = 33 → 시각적 갭 = 33 - 18 = 15px
 const TRACKS = [
   { a: 285, b: 130, color: '#5B7EFF', trackColor: 'rgba(91,126,255,0.2)'  },
-  { a: 220, b:  98, color: '#9B6DFF', trackColor: 'rgba(155,109,255,0.2)' },
-  { a: 155, b:  66, color: '#30D158', trackColor: 'rgba(48,209,88,0.2)'   },
+  { a: 220, b:  98, color: '#30D158', trackColor: 'rgba(48,209,88,0.2)'   },
+  { a: 155, b:  66, color: '#9B6DFF', trackColor: 'rgba(155,109,255,0.2)' },
 ] as const;
 
 // 스타디움 SVG path (center=0,0, 상단 중심에서 시계방향 출발)
