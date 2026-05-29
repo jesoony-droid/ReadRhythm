@@ -197,8 +197,9 @@ export default function HomeScreen() {
             <TouchableOpacity
               style={styles.demoBtn}
               onPress={() => {
-                seedDemoData();
-                Alert.alert('데모 데이터', '샘플 책·세션·문장이 추가됐어요!');
+                seedDemoData().then(() =>
+                  Alert.alert('데모 데이터', '샘플 책·세션·문장이 추가됐어요!')
+                );
               }}
             >
               <Text style={styles.demoBtnText}>데모 채우기</Text>
