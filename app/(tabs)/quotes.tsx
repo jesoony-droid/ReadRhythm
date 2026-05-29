@@ -62,7 +62,7 @@ export default function QuotesScreen() {
   };
 
   const handleDelete = (id: string) => {
-    Alert.alert('문장 삭제', '이 문장을 삭제할까요?', [
+    Alert.alert('삭제', '이 한줄을 삭제할까요?', [
       { text: '취소', style: 'cancel' },
       { text: '삭제', style: 'destructive', onPress: () => removeQuote(id) },
     ]);
@@ -82,7 +82,7 @@ export default function QuotesScreen() {
     <SafeAreaView style={styles.safe}>
       {/* 헤더 */}
       <View style={styles.header}>
-        <Text style={styles.title}>문장 수집</Text>
+        <Text style={styles.title}>나만의 한줄</Text>
         <TouchableOpacity style={styles.addBtn} onPress={() => setShowModal(true)}>
           <Text style={styles.addBtnText}>+ 추가</Text>
         </TouchableOpacity>
@@ -93,7 +93,7 @@ export default function QuotesScreen() {
         <View style={styles.searchRow}>
           <TextInput
             style={styles.searchInput}
-            placeholder="문장 또는 책 제목 검색"
+            placeholder="한줄 또는 책 제목 검색"
             placeholderTextColor={Colors.textMuted}
             value={searchText}
             onChangeText={setSearchText}
@@ -131,7 +131,7 @@ export default function QuotesScreen() {
           <View style={styles.empty}>
             <Text style={styles.emptyEmoji}>💬</Text>
             <Text style={styles.emptyText}>
-              {quotes.length === 0 ? '마음에 닿은 문장을 모아보세요' : '검색 결과가 없어요'}
+              {quotes.length === 0 ? '마음에 닿은 한줄을 모아보세요' : '검색 결과가 없어요'}
             </Text>
           </View>
         ) : (
@@ -143,11 +143,11 @@ export default function QuotesScreen() {
       <Modal visible={showModal} transparent animationType="slide">
         <View style={styles.modalOverlay}>
           <View style={styles.modalCard}>
-            <Text style={styles.modalTitle}>문장 추가</Text>
+            <Text style={styles.modalTitle}>한줄 추가</Text>
 
             <TextInput
               style={styles.textArea}
-              placeholder="기억하고 싶은 문장을 입력하세요"
+              placeholder="기억하고 싶은 한줄을 입력하세요"
               placeholderTextColor={Colors.textMuted}
               multiline
               value={text}
