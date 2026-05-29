@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
   scroll: { padding: Spacing.md, gap: Spacing.lg, paddingBottom: 80 },
 
   header: { paddingTop: Spacing.sm, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
-  todayLabel: { fontSize: FontSize.xs, color: Colors.textMuted, marginBottom: 4 },
+  todayLabel: { fontSize: FontSize.sm, fontWeight: '600', color: Colors.textSub, marginBottom: 4 },
   greeting: { fontSize: FontSize.xl, fontWeight: '700', color: Colors.text },
   demoBtn: {
     backgroundColor: Colors.primaryLight, borderRadius: Radius.full,
