@@ -3,12 +3,17 @@ import { Text } from 'react-native';
 import { Colors } from '../../src/constants/tokens';
 
 const ICONS: Record<string, string> = {
-  home: '🏠', book: '📚', timer: '⏱', librarian: '🤖', person: '👤',
+  home:      '🏠',
+  book:      '📚',
+  timer:     '⏱',
+  quote:     '💬',
+  librarian: '🤖',
+  person:    '👤',
 };
 
 function TabIcon({ name, color, focused }: { name: string; color: string; focused: boolean }) {
   return (
-    <Text style={{ fontSize: 18, opacity: focused ? 1 : 0.55 }}>
+    <Text style={{ fontSize: 18, opacity: focused ? 1 : 0.5 }}>
       {ICONS[name] ?? '●'}
     </Text>
   );
@@ -31,7 +36,6 @@ export default function TabsLayout() {
         tabBarLabelStyle: { fontSize: 10, fontWeight: '500' },
       }}
     >
-      {/* ── 표시 탭 (5개) ── */}
       <Tabs.Screen
         name="index"
         options={{ title: '홈', tabBarIcon: (p) => <TabIcon name="home" {...p} /> }}
@@ -45,6 +49,10 @@ export default function TabsLayout() {
         options={{ title: '타이머', tabBarIcon: (p) => <TabIcon name="timer" {...p} /> }}
       />
       <Tabs.Screen
+        name="quotes"
+        options={{ title: '한줄', tabBarIcon: (p) => <TabIcon name="quote" {...p} /> }}
+      />
+      <Tabs.Screen
         name="librarian"
         options={{ title: 'AI사서', tabBarIcon: (p) => <TabIcon name="librarian" {...p} /> }}
       />
@@ -53,9 +61,8 @@ export default function TabsLayout() {
         options={{ title: '내정보', tabBarIcon: (p) => <TabIcon name="person" {...p} /> }}
       />
 
-      {/* ── 숨김 탭 (탭바에서 제거, 라우트는 유지) ── */}
-      <Tabs.Screen name="bgm"    options={{ href: null }} />
-      <Tabs.Screen name="quotes" options={{ href: null }} />
+      {/* 숨김 탭 */}
+      <Tabs.Screen name="bgm" options={{ href: null }} />
     </Tabs>
   );
 }

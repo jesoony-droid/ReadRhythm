@@ -117,7 +117,6 @@ export default function ProfileScreen() {
         <View style={styles.menuGrid}>
           <MenuButton emoji="🎯" label="목표 설정" onPress={() => router.push('/goal-settings')} color={Colors.primary} />
           <MenuButton emoji="📊" label="코치 리포트" onPress={() => router.push('/coach-report')} color={Colors.primary} />
-          <MenuButton emoji="💬" label="나만의 한줄" onPress={() => router.push('/(tabs)/quotes')} color={Colors.purple} />
           <MenuButton emoji="🎵" label="독서 BGM" onPress={() => router.push('/(tabs)/bgm')} color={Colors.primary} />
           <MenuButton emoji="🏆" label={`배지 ${unlockedCount}개`} onPress={() => router.push('/badges')} color={Colors.gold} />
           <MenuButton emoji="✨" label="AI 추천" onPress={() => router.push('/recommend')} color={Colors.purple} />
