@@ -11,9 +11,9 @@ import { Circle, Svg, G } from 'react-native-svg';
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 const RINGS = [
-  { r: 108, color: '#3B5BDB', trackColor: 'rgba(59,91,219,0.15)' }, // 바깥: 일일 목표 시간
-  { r: 86,  color: '#7048E8', trackColor: 'rgba(112,72,232,0.15)' }, // 중간: 현재 세션
-  { r: 64,  color: '#2F9E44', trackColor: 'rgba(47,158,68,0.15)'  }, // 안쪽: 일일 목표 페이지
+  { r: 108, color: '#5B7EFF', trackColor: 'rgba(91,126,255,0.18)'  }, // 바깥: 일일 목표 시간
+  { r: 86,  color: '#9B6DFF', trackColor: 'rgba(155,109,255,0.18)' }, // 중간: 현재 세션
+  { r: 64,  color: '#30D158', trackColor: 'rgba(48,209,88,0.18)'   }, // 안쪽: 일일 목표 페이지
 ] as const;
 
 const STROKE = 14;

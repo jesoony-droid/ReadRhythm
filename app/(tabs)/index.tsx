@@ -338,8 +338,9 @@ const styles = StyleSheet.create({
 
   coachCard: {
     flexDirection: 'row', alignItems: 'center',
-    backgroundColor: '#1A1A2E', borderRadius: Radius.md,
+    backgroundColor: Colors.surface, borderRadius: Radius.md,
     padding: Spacing.md, gap: Spacing.sm, ...Shadow.card,
+    borderWidth: 1, borderColor: Colors.border,
   },
   coachLeft: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   coachIconWrap: {
@@ -354,12 +355,13 @@ const styles = StyleSheet.create({
 
   aiBanner: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
-    backgroundColor: Colors.dark, borderRadius: Radius.md, padding: Spacing.md, ...Shadow.card,
+    backgroundColor: Colors.primaryLight, borderRadius: Radius.md, padding: Spacing.md, ...Shadow.card,
+    borderWidth: 1, borderColor: Colors.primaryMid,
   },
   aiBannerLeft: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   aiBannerEmoji: { fontSize: 28 },
-  aiBannerTitle: { fontSize: FontSize.md, fontWeight: '700', color: '#fff' },
-  aiBannerSub: { fontSize: FontSize.xs, color: 'rgba(255,255,255,0.5)', marginTop: 2 },
+  aiBannerTitle: { fontSize: FontSize.md, fontWeight: '700', color: Colors.text },
+  aiBannerSub: { fontSize: FontSize.xs, color: Colors.textSub, marginTop: 2 },
   aiBannerArrow: { fontSize: 22, color: Colors.primary, fontWeight: '700' },
 
   weekCard: {
