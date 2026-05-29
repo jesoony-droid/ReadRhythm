@@ -206,9 +206,11 @@ const styles = StyleSheet.create({
   tabScroll: { flexGrow: 0 },
   tabRow:    { paddingHorizontal: Spacing.md, gap: Spacing.sm, paddingBottom: Spacing.sm },
   tab: {
-    paddingVertical: 6, paddingHorizontal: 14,
+    paddingVertical: 8, paddingHorizontal: 20,
+    minWidth: 80,
     borderRadius: Radius.full, backgroundColor: Colors.surface,
     borderWidth: 1, borderColor: Colors.border,
+    alignItems: 'center',
   },
   tabActive:     { backgroundColor: Colors.primary, borderColor: Colors.primary },
   tabText:       { fontSize: FontSize.sm, color: Colors.textSub, fontWeight: '500' },
