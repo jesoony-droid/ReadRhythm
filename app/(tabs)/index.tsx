@@ -215,7 +215,7 @@ export default function HomeScreen() {
               {/* 좌 30%: 아이콘 + 라벨 */}
               <View style={styles.labelCol}>
                 <Text style={styles.labelEmoji}>📚</Text>
-                <Text style={styles.labelText}>지금{'\n'}읽는{'\n'}책</Text>
+                <Text style={styles.labelText}>지금 읽는 책</Text>
                 <TouchableOpacity onPress={() => router.push('/search')}>
                   <Text style={styles.labelAdd}>+</Text>
                 </TouchableOpacity>
@@ -273,7 +273,7 @@ export default function HomeScreen() {
               {/* 좌 30%: 아이콘 + 라벨 */}
               <View style={styles.labelCol}>
                 <Text style={styles.labelEmoji}>🎯</Text>
-                <Text style={styles.labelText}>오늘의{'\n'}목표</Text>
+                <Text style={styles.labelText}>오늘의 목표</Text>
                 {goalDone && <Text style={{ fontSize: 18 }}>🎉</Text>}
               </View>
               {/* 우 70%: 수치 */}
@@ -317,7 +317,7 @@ export default function HomeScreen() {
             <View style={styles.boxInner}>
               <View style={styles.labelCol}>
                 <Text style={styles.labelEmoji}>🤖</Text>
-                <Text style={styles.labelText}>AI{'\n'}독서{'\n'}코치</Text>
+                <Text style={styles.labelText}>AI 독서 코치</Text>
               </View>
               <View style={styles.dataCol}>
                 <Text style={styles.aiDataText} numberOfLines={4}>
@@ -334,7 +334,7 @@ export default function HomeScreen() {
             <View style={styles.boxInner}>
               <View style={styles.labelCol}>
                 <Text style={styles.labelEmoji}>✨</Text>
-                <Text style={styles.labelText}>AI{'\n'}맞춤{'\n'}추천</Text>
+                <Text style={styles.labelText}>AI 맞춤 추천</Text>
               </View>
               <View style={styles.dataCol}>
                 <Text style={styles.aiDataText} numberOfLines={4}>
