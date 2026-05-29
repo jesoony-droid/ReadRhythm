@@ -23,12 +23,12 @@ export const Colors = {
   // ── Backgrounds & Surfaces ────────────────────────────────
   bg: '#0B0D17',            // 메인 배경 (깊은 다크 네이비)
   surface: '#13162A',       // 카드/패널 배경
-  border: '#1D2240',        // 구분선 / 테두리
+  border: '#272E50',        // 구분선 / 테두리
 
   // ── Text ─────────────────────────────────────────────────
-  text: '#EDF0FF',          // 기본 텍스트 (near-white)
-  textSub: '#8891AD',       // 보조 텍스트
-  textMuted: '#505870',     // 희미한 텍스트 / 플레이스홀더
+  text: '#F5F7FF',          // 기본 텍스트 (pure near-white)
+  textSub: '#C2CADF',       // 보조 텍스트 (충분한 대비)
+  textMuted: '#8A94B0',     // 희미한 텍스트 / 플레이스홀더
 
   // ── Dark (타이머 전용) ────────────────────────────────────
   dark: '#070912',          // 가장 깊은 다크 (타이머 배경)
@@ -52,13 +52,13 @@ export const Radius = {
 } as const;
 
 export const FontSize = {
-  xs: 10,
-  sm: 12,
-  md: 14,
-  lg: 16,
-  xl: 20,
-  xxl: 28,
-  hero: 44,
+  xs: 12,
+  sm: 14,
+  md: 16,
+  lg: 18,
+  xl: 22,
+  xxl: 30,
+  hero: 48,
 } as const;
 
 export const Shadow = {
