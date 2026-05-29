@@ -1,14 +1,14 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>ReadRhythm 발표 가이드</title>
+<title>ReadRhythm 발표 가이드 v2.0</title>
 <style>
 @page {
   size: A4 portrait;
   margin: 16mm 17mm 20mm 17mm;
   @bottom-left {
-    content: "ReadRhythm v1.0 — 발표 가이드 | AI 기반 독서 습관 트래커";
+    content: "ReadRhythm v2.0 — 발표 가이드 | AI 기반 독서 습관 트래커";
     font-size: 8.5px; color: #9ca3af; font-family: 'Malgun Gothic', sans-serif;
   }
   @bottom-right {
@@ -38,23 +38,31 @@ body { font-family:'Malgun Gothic','맑은 고딕',sans-serif; font-size:11pt;
 }
 .cv-tag { border:1px solid rgba(255,255,255,.35); border-radius:20px;
   padding:4px 18px; color:rgba(255,255,255,.75); font-size:9pt;
-  margin-bottom:24px; letter-spacing:.08em; }
+  margin-bottom:16px; letter-spacing:.08em; }
+.cv-ver-bar { display:flex; gap:10px; margin-bottom:16px; align-items:center; justify-content:center; }
+.cv-ver-v1 { border:1px solid #e94560; border-radius:6px; padding:3px 12px;
+  color:#e94560; font-size:9pt; font-weight:700; }
+.cv-ver-arrow { color:#5a7a9a; font-size:12pt; }
+.cv-ver-v2 { border:1px solid #fbbf24; border-radius:6px; padding:3px 12px;
+  color:#fbbf24; font-size:9pt; font-weight:700; background:rgba(251,191,36,.1); }
 .cv-main { font-size:26pt; font-weight:700; color:#fff; text-align:center;
   line-height:1.25; margin-bottom:8px; }
 .cv-main span { color:#e94560; }
-.cv-sub { font-size:12pt; color:rgba(255,255,255,.8); text-align:center; margin-bottom:32px; }
+.cv-sub { font-size:12pt; color:rgba(255,255,255,.8); text-align:center; margin-bottom:28px; }
 .cv-cards { display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%; margin-bottom:28px; }
 .cv-card { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2);
   border-radius:12px; padding:16px 18px; }
+.cv-card.v2c { background:rgba(251,191,36,.1); border-color:#fbbf24; }
 .cv-card-icon  { font-size:18pt; margin-bottom:5px; }
 .cv-card-title { font-size:10pt; font-weight:700; color:#fbbf24; margin-bottom:5px; }
+.cv-card.v2c .cv-card-title { color:#fde68a; }
 .cv-card-desc  { font-size:9.5pt; color:rgba(255,255,255,.82); line-height:1.65; }
 .cover-bottom { background:#0a0f1e; padding:20px 52px;
   display:flex; justify-content:space-between; align-items:center; }
 .cover-bottom-left  { font-size:9pt; color:rgba(255,255,255,.45); }
 .cover-bottom-right { font-size:9pt; color:rgba(255,255,255,.45); }
 
-/* ════ 핵심 수치 카드 (인쇄용 Quick Ref) ════ */
+/* ════ Quick Ref ════ */
 .refcard {
   page:refcard;
   width:210mm; height:297mm;
@@ -64,29 +72,40 @@ body { font-family:'Malgun Gothic','맑은 고딕',sans-serif; font-size:11pt;
   page-break-after:always;
 }
 .rc-title { font-size:14pt; font-weight:700; color:#e94560;
-  letter-spacing:.06em; margin-bottom:20px; text-align:center; }
-.rc-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:20px; }
+  letter-spacing:.06em; margin-bottom:16px; text-align:center; }
+.rc-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px; }
 .rc-box { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12);
-  border-radius:10px; padding:14px 16px; text-align:center; }
-.rc-num { font-size:26pt; font-weight:700; line-height:1; margin-bottom:5px; }
+  border-radius:10px; padding:12px 14px; text-align:center; }
+.rc-box.v2box { background:rgba(251,191,36,.1); border-color:#fbbf24; }
+.rc-num { font-size:24pt; font-weight:700; line-height:1; margin-bottom:4px; }
 .rc-num.red    { color:#e94560; }
 .rc-num.blue   { color:#38bdf8; }
 .rc-num.green  { color:#4ade80; }
 .rc-num.gold   { color:#fbbf24; }
 .rc-num.purple { color:#a78bfa; }
 .rc-num.teal   { color:#2dd4bf; }
-.rc-lbl { font-size:9pt; color:#94a3b8; }
-.rc-flow { display:flex; gap:12px; margin-bottom:18px; }
+.rc-lbl { font-size:8.5pt; color:#94a3b8; }
+.rc-lbl.gold-lbl { color:#fbbf24; font-weight:700; }
+
+.rc-ver-section { margin-bottom:14px; }
+.rc-ver-title { font-size:9pt; font-weight:700; letter-spacing:.06em; margin-bottom:8px;
+  padding:3px 10px; border-radius:4px; display:inline-block; }
+.rc-ver-title.v1t { background:rgba(233,69,96,.25); color:#e94560; }
+.rc-ver-title.v2t { background:rgba(251,191,36,.25); color:#fbbf24; }
+.rc-flow { display:flex; gap:8px; }
 .rc-step { flex:1; background:rgba(255,255,255,.05); border-radius:8px;
-  padding:10px 12px; text-align:center; }
+  padding:8px 10px; text-align:center; }
+.rc-step.v2step { background:rgba(251,191,36,.08); border:1px solid rgba(251,191,36,.3); }
 .rc-step-num { font-size:7pt; color:#e94560; font-weight:700;
-  letter-spacing:.06em; margin-bottom:5px; }
-.rc-step-icon { font-size:16pt; margin-bottom:5px; }
-.rc-step-txt  { font-size:8.5pt; color:#c8dff5; line-height:1.5; }
-.rc-qa { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.rc-qa-item { background:rgba(255,255,255,.05); border-radius:8px; padding:10px 12px; }
+  letter-spacing:.06em; margin-bottom:4px; }
+.rc-step-num.gold-num { color:#fbbf24; }
+.rc-step-icon { font-size:14pt; margin-bottom:4px; }
+.rc-step-txt  { font-size:8pt; color:#c8dff5; line-height:1.5; }
+.rc-qa { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
+.rc-qa-item { background:rgba(255,255,255,.05); border-radius:8px; padding:9px 11px; }
+.rc-qa-item.v2q { background:rgba(251,191,36,.08); border:1px solid rgba(251,191,36,.25); }
 .rc-qa-q { font-size:9pt; font-weight:700; color:#fbbf24; margin-bottom:4px; }
-.rc-qa-a { font-size:9pt; color:#c8dff5; line-height:1.6; }
+.rc-qa-a { font-size:8.5pt; color:#c8dff5; line-height:1.6; }
 
 /* ════ 본문 공통 ════ */
 .page { page-break-after:always; }
@@ -94,6 +113,7 @@ body { font-family:'Malgun Gothic','맑은 고딕',sans-serif; font-size:11pt;
 
 h1 { font-size:15pt; font-weight:700; color:#0f3460; margin-bottom:12px;
   padding-bottom:6px; border-bottom:2.5px solid #e94560; }
+h1.v2h1 { color:#92400e; border-bottom-color:#fbbf24; }
 h2 { font-size:12pt; font-weight:700; color:#16213e; margin:14px 0 7px; }
 h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
 
@@ -102,19 +122,25 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
   border:1px solid #e2e8f0; border-radius:10px;
   overflow:hidden; margin-bottom:14px;
 }
+.slide-block.v2block { border-color:#fde68a; }
 .slide-header {
   background:#0f3460; color:#fff;
   padding:9px 16px; display:flex; align-items:center; gap:10px;
 }
+.slide-header.v2header { background:#b45309; }
 .slide-num { background:#e94560; border-radius:50%; width:24px; height:24px;
   display:flex; align-items:center; justify-content:center;
   font-size:9pt; font-weight:700; flex-shrink:0; }
+.slide-num.v2num { background:#fbbf24; color:#1a1a2e; }
 .slide-title { font-size:11pt; font-weight:700; }
 .slide-time  { font-size:9pt; color:#90b4d4; margin-left:auto; }
+.slide-time.gold-time { color:#fde68a; }
 .slide-body  { padding:12px 16px; background:#f8fafc; }
+.slide-body.v2body { background:#fffbeb; }
 .script      { font-size:10pt; color:#1f2937; line-height:1.85;
   background:#fff; border-left:3px solid #e94560;
   padding:8px 12px; border-radius:0 6px 6px 0; margin-bottom:8px; }
+.script.v2script { border-left-color:#f59e0b; background:#fefce8; }
 .script b    { color:#0f3460; }
 .points      { list-style:none; padding:0; }
 .points li   { font-size:10pt; color:#374151; padding:3px 0;
@@ -131,6 +157,14 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
 .tip-box ul { padding-left:16px; }
 .tip-box li { font-size:9.5pt; color:#c8dff5; line-height:1.8; }
 
+/* v2 팁 박스 */
+.tip-box.v2tip {
+  background:linear-gradient(135deg,#78350f,#b45309);
+}
+.tip-box.v2tip h3 { color:#fde68a; }
+.tip-box.v2tip p  { color:#fef3c7; }
+.tip-box.v2tip li { color:#fef3c7; }
+
 /* ════ 데모 순서 ════ */
 .demo-step {
   display:flex; gap:12px; align-items:flex-start;
@@ -139,8 +173,10 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
 .demo-num { background:#e94560; color:#fff; border-radius:50%;
   width:26px; height:26px; display:flex; align-items:center;
   justify-content:center; font-size:9pt; font-weight:700; flex-shrink:0; }
+.demo-num.v2dn { background:#f59e0b; }
 .demo-content { flex:1; }
 .demo-action  { font-size:10pt; font-weight:700; color:#0f3460; }
+.demo-action.v2da { color:#92400e; }
 .demo-script  { font-size:9.5pt; color:#374151; line-height:1.7; }
 
 /* ════ Q&A 카드 ════ */
@@ -159,8 +195,16 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
 .badge-green  { background:#dcfce7; color:#16a34a; }
 .badge-gold   { background:#fef9c3; color:#92400e; }
 .badge-gray   { background:#f1f5f9; color:#475569; }
+.badge-v1     { background:#fee2e2; color:#9f1239; border:1px solid #fca5a5; }
+.badge-v2     { background:#fef3c7; color:#92400e; border:1px solid #fde68a; }
 
 .two-col { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+
+/* 버전 구분 헤더 */
+.ver-section-header { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.ver-label { border-radius:6px; padding:3px 12px; font-size:9pt; font-weight:700; letter-spacing:.05em; }
+.ver-label.v1l { background:#fee2e2; color:#9f1239; border:1px solid #fca5a5; }
+.ver-label.v2l { background:#fef3c7; color:#92400e; border:1px solid #fde68a; }
 </style>
 </head>
 <body>
@@ -171,27 +215,32 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
 <div class="cover">
   <div class="cover-top">
     <div class="cv-tag">📚 발표 가이드 · 2026년 5월</div>
+    <div class="cv-ver-bar">
+      <span class="cv-ver-v1">v1.0 · 12주 MVP</span>
+      <span class="cv-ver-arrow">→</span>
+      <span class="cv-ver-v2">v2.0 · AI 고도화 & UX 개선</span>
+    </div>
     <div class="cv-main">ReadRhythm<br><span>발표 가이드</span></div>
     <div class="cv-sub">AI 기반 독서 습관 트래커 — 개발 과정 & 데모 시연 스크립트</div>
     <div class="cv-cards">
       <div class="cv-card">
         <div class="cv-card-icon">🤖</div>
-        <div class="cv-card-title">AI 사서 RAG</div>
-        <div class="cv-card-desc">국립중앙도서관 Q&A 5,910건 기반<br>Gemini 2.5 Flash 스트리밍 답변<br>현재 읽는 책 맥락 자동 인식</div>
+        <div class="cv-card-title">AI 사서 RAG (v1.0)</div>
+        <div class="cv-card-desc">국립중앙도서관 Q&A 5,910건 기반<br>Gemini 2.5 Flash 스트리밍 답변</div>
       </div>
-      <div class="cv-card">
+      <div class="cv-card v2c">
         <div class="cv-card-icon">✨</div>
-        <div class="cv-card-title">Claude AI 추천</div>
-        <div class="cv-card-desc">독서 패턴 분석 · 궁합 % 점수<br>Claude Opus 4.7 Extended Thinking<br>코치 리포트 + 동기부여 메시지</div>
+        <div class="cv-card-title">v2.0 — 4종 신규 기능</div>
+        <div class="cv-card-desc">AI 도서 담기 · 백엔드 통합<br>컨텍스트 바 · 5탭 재편</div>
       </div>
       <div class="cv-card">
         <div class="cv-card-icon">⏱</div>
-        <div class="cv-card-title">독서 타이머</div>
+        <div class="cv-card-title">독서 타이머 (v1.0)</div>
         <div class="cv-card-desc">3중 링 SVG 애니메이션<br>자유 / 뽀모도로 모드<br>세션 기록 · XP · 레벨 시스템</div>
       </div>
       <div class="cv-card">
         <div class="cv-card-icon">📊</div>
-        <div class="cv-card-title">성장 추적</div>
+        <div class="cv-card-title">성장 추적 (v1.0)</div>
         <div class="cv-card-desc">12주 성장 그래프 · 배지 30종<br>연간 리포트 · 연속 독서 스트릭<br>장르 도넛 차트 · 월간 캘린더</div>
       </div>
     </div>
@@ -207,24 +256,24 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
      핵심 수치 Quick Reference Card
 ══════════════════════════════════════════ -->
 <div class="refcard">
-  <div class="rc-title">⚡ QUICK REFERENCE — 핵심 수치 & 발표 흐름</div>
+  <div class="rc-title">⚡ QUICK REFERENCE — 핵심 수치 & 발표 흐름 (v2.0)</div>
 
   <div class="rc-grid">
     <div class="rc-box">
       <div class="rc-num red">12</div>
-      <div class="rc-lbl">개발 주수</div>
+      <div class="rc-lbl">개발 주수 (v1.0)</div>
     </div>
-    <div class="rc-box">
-      <div class="rc-num blue">30+</div>
-      <div class="rc-lbl">앱 화면 수</div>
+    <div class="rc-box v2box">
+      <div class="rc-num gold">4</div>
+      <div class="rc-lbl gold-lbl">v2.0 신규 기능</div>
     </div>
     <div class="rc-box">
       <div class="rc-num green">5,910</div>
       <div class="rc-lbl">Q&A 데이터</div>
     </div>
     <div class="rc-box">
-      <div class="rc-num gold">3</div>
-      <div class="rc-lbl">AI 기능 종류</div>
+      <div class="rc-num blue">30+</div>
+      <div class="rc-lbl">앱 화면 수</div>
     </div>
     <div class="rc-box">
       <div class="rc-num purple">30</div>
@@ -236,36 +285,60 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
     </div>
   </div>
 
-  <div class="rc-flow">
-    <div class="rc-step">
-      <div class="rc-step-num">STEP 01</div>
-      <div class="rc-step-icon">📋</div>
-      <div class="rc-step-txt">도입<br>문제 정의<br>1~2분</div>
+  <div class="rc-ver-section">
+    <div class="rc-ver-title v1t">v1.0 발표 흐름 (12주 MVP)</div>
+    <div class="rc-flow">
+      <div class="rc-step">
+        <div class="rc-step-num">STEP 01</div>
+        <div class="rc-step-icon">📋</div>
+        <div class="rc-step-txt">도입<br>문제 정의<br>1~2분</div>
+      </div>
+      <div class="rc-step">
+        <div class="rc-step-num">STEP 02</div>
+        <div class="rc-step-icon">🏗️</div>
+        <div class="rc-step-txt">기술 스택<br>아키텍처<br>2~3분</div>
+      </div>
+      <div class="rc-step">
+        <div class="rc-step-num">STEP 03</div>
+        <div class="rc-step-icon">📱</div>
+        <div class="rc-step-txt">앱 데모<br>5탭 투어<br>2~3분</div>
+      </div>
+      <div class="rc-step">
+        <div class="rc-step-num">STEP 04</div>
+        <div class="rc-step-icon">🤖</div>
+        <div class="rc-step-txt">AI 사서<br>RAG 시연<br>2~3분</div>
+      </div>
     </div>
-    <div class="rc-step">
-      <div class="rc-step-num">STEP 02</div>
-      <div class="rc-step-icon">🏗️</div>
-      <div class="rc-step-txt">기술 스택<br>아키텍처<br>2~3분</div>
-    </div>
-    <div class="rc-step">
-      <div class="rc-step-num">STEP 03</div>
-      <div class="rc-step-icon">📱</div>
-      <div class="rc-step-txt">앱 데모<br>5탭 투어<br>3~4분</div>
-    </div>
-    <div class="rc-step">
-      <div class="rc-step-num">STEP 04</div>
-      <div class="rc-step-icon">🤖</div>
-      <div class="rc-step-txt">AI 사서<br>RAG 시연<br>2~3분</div>
-    </div>
-    <div class="rc-step">
-      <div class="rc-step-num">STEP 05</div>
-      <div class="rc-step-icon">✨</div>
-      <div class="rc-step-txt">AI 추천<br>코치 리포트<br>2분</div>
-    </div>
-    <div class="rc-step">
-      <div class="rc-step-num">STEP 06</div>
-      <div class="rc-step-icon">🏁</div>
-      <div class="rc-step-txt">회고 &<br>향후 계획<br>1~2분</div>
+  </div>
+
+  <div class="rc-ver-section">
+    <div class="rc-ver-title v2t">v2.0 추가 발표 흐름 (신규 기능 4종)</div>
+    <div class="rc-flow">
+      <div class="rc-step v2step">
+        <div class="rc-step-num gold-num">TASK #4</div>
+        <div class="rc-step-icon">📖</div>
+        <div class="rc-step-txt">AI 도서<br>담기 시연<br>1~2분</div>
+      </div>
+      <div class="rc-step v2step">
+        <div class="rc-step-num gold-num">TASK #5</div>
+        <div class="rc-step-icon">🔗</div>
+        <div class="rc-step-txt">백엔드<br>단일화<br>1분</div>
+      </div>
+      <div class="rc-step v2step">
+        <div class="rc-step-num gold-num">TASK #6</div>
+        <div class="rc-step-icon">📌</div>
+        <div class="rc-step-txt">컨텍스트<br>바 데모<br>1분</div>
+      </div>
+      <div class="rc-step v2step">
+        <div class="rc-step-num gold-num">TASK #7</div>
+        <div class="rc-step-icon">🗂️</div>
+        <div class="rc-step-txt">5탭 구조<br>설명<br>1분</div>
+      </div>
+      <div class="rc-step">
+        <div class="rc-step-num">마무리</div>
+        <div class="rc-step-icon">🏁</div>
+        <div class="rc-step-txt">회고 &<br>향후 계획<br>1~2분</div>
+      </div>
     </div>
   </div>
 
@@ -284,17 +357,17 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
         {"gemini":true, "anthropic":false, "db":true}
       </div>
     </div>
-    <div class="rc-qa-item">
-      <div class="rc-qa-q">📱 데모 순서</div>
+    <div class="rc-qa-item v2q">
+      <div class="rc-qa-q">📖 v2.0 데모 순서</div>
       <div class="rc-qa-a">
-        데모 채우기 버튼 → AI사서 탭 → 중학생 과학책 추천 칩 클릭 → + 담기 버튼
+        AI사서 → 질문 전송 → 스크롤 ↓<br>→ "언급된 도서" 섹션 → "+ 담기" 클릭
       </div>
     </div>
     <div class="rc-qa-item">
       <div class="rc-qa-q">⚠️ Gemini 할당량 초과 시</div>
       <div class="rc-qa-a">
         정상 동작 (정규식 폴백 작동)<br>
-        /api/ask는 검색결과 직접 표시
+        도서 추출도 정규식으로 대체 작동
       </div>
     </div>
   </div>
@@ -302,10 +375,14 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
 
 
 <!-- ══════════════════════════════════════════
-     발표 슬라이드 1: 도입
+     슬라이드 1~2: 도입
 ══════════════════════════════════════════ -->
 <div class="page">
-<h1>슬라이드 1~2 · 도입 — 문제 정의 & 솔루션</h1>
+<div class="ver-section-header">
+  <span class="ver-label v1l">v1.0</span>
+  <h1 style="margin:0; padding:0; border:none; color:#0f3460;">슬라이드 1~2 · 도입 — 문제 정의 & 솔루션</h1>
+</div>
+<div style="border-bottom:2.5px solid #e94560; margin-bottom:14px;"></div>
 
 <div class="slide-block">
   <div class="slide-header">
@@ -351,10 +428,14 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
 
 
 <!-- ══════════════════════════════════════════
-     발표 슬라이드 2: 기술 스택
+     슬라이드 3: 기술 스택
 ══════════════════════════════════════════ -->
 <div class="page">
-<h1>슬라이드 3 · 기술 스택 & 아키텍처</h1>
+<div class="ver-section-header">
+  <span class="ver-label v1l">v1.0</span>
+  <h1 style="margin:0; padding:0; border:none; color:#0f3460;">슬라이드 3 · 기술 스택 & 아키텍처</h1>
+</div>
+<div style="border-bottom:2.5px solid #e94560; margin-bottom:14px;"></div>
 
 <div class="slide-block">
   <div class="slide-header">
@@ -379,9 +460,9 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
         </ul>
       </div>
       <div>
-        <h3>🖥️ 백엔드 + AI</h3>
+        <h3>🖥️ 백엔드 + AI <span style="font-size:8pt; color:#92400e; background:#fef3c7; padding:1px 6px; border-radius:4px;">v2.0 통합</span></h3>
         <ul class="points">
-          <li>FastAPI (Python) — 단일 포트 8000</li>
+          <li>FastAPI (Python) — 단일 포트 8000 (v2.0 통합)</li>
           <li>Gemini 2.5 Flash — RAG 답변 스트리밍</li>
           <li>pgvector — 384차원 로컬 임베딩 검색</li>
           <li>Claude Opus 4.7 — 도서 추천 · 코치 리포트</li>
@@ -404,16 +485,20 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
 
 
 <!-- ══════════════════════════════════════════
-     발표 슬라이드 3: 앱 데모
+     슬라이드 4: v1.0 앱 데모
 ══════════════════════════════════════════ -->
 <div class="page">
-<h1>슬라이드 4 · 앱 데모 — 5탭 투어</h1>
+<div class="ver-section-header">
+  <span class="ver-label v1l">v1.0</span>
+  <h1 style="margin:0; padding:0; border:none; color:#0f3460;">슬라이드 4 · 앱 데모 — 5탭 투어 (v1.0 핵심 기능)</h1>
+</div>
+<div style="border-bottom:2.5px solid #e94560; margin-bottom:14px;"></div>
 
 <div class="slide-block">
   <div class="slide-header">
     <div class="slide-num">4</div>
-    <div class="slide-title">실제 앱 시연 — 5탭 핵심 기능</div>
-    <div class="slide-time">⏱ 약 3~4분</div>
+    <div class="slide-title">실제 앱 시연 — v1.0 5탭 핵심 기능</div>
+    <div class="slide-time">⏱ 약 2~3분</div>
   </div>
   <div class="slide-body">
     <div class="script">
@@ -430,22 +515,22 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
     <div class="demo-step">
       <div class="demo-num">2</div>
       <div class="demo-content">
-        <div class="demo-action">📚 서재 탭 — 책 상태 & 차트 확인</div>
+        <div class="demo-action">📚 서재 탭 — 책 상태 & 장르 차트 확인</div>
         <div class="demo-script">"서재에서는 읽는 중/완독/읽고 싶어요로 분류합니다. 장르 도넛 차트로 내 독서 편향도 파악할 수 있습니다."</div>
       </div>
     </div>
     <div class="demo-step">
       <div class="demo-num">3</div>
       <div class="demo-content">
-        <div class="demo-action">⏱ 타이머 탭 — BGM 버튼 & 모드 설명</div>
-        <div class="demo-script">"타이머의 3중 링은 목표 시간, 실제 시간, 페이지를 동시에 보여줍니다. 우측 상단 🎵 BGM 버튼으로 독서 음악도 바로 켤 수 있습니다."</div>
+        <div class="demo-action">⏱ 타이머 탭 — 3중링 & 뽀모도로 설명</div>
+        <div class="demo-script">"타이머의 3중 링은 목표 시간, 실제 시간, 페이지를 동시에 보여줍니다. <b>자유 모드와 뽀모도로(25분) 모드</b>를 선택할 수 있습니다."</div>
       </div>
     </div>
     <div class="demo-step">
       <div class="demo-num">4</div>
       <div class="demo-content">
-        <div class="demo-action">👤 내정보 탭 — 레벨 & 메뉴 그리드</div>
-        <div class="demo-script">"6일 연속 독서, 배지 4개 획득, Lv.2 책 애호가. 문장 보관함과 독서 BGM도 이 탭에서 바로 진입할 수 있습니다."</div>
+        <div class="demo-action">👤 내정보 탭 — 레벨 · 배지 · 연간 리포트</div>
+        <div class="demo-script">"6일 연속 독서, 배지 4개 획득, Lv.2 책 애호가. 연간 리포트는 5단계 슬라이드로 한 해 독서 성과를 돌아볼 수 있습니다."</div>
       </div>
     </div>
 
@@ -459,58 +544,61 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
 
 
 <!-- ══════════════════════════════════════════
-     발표 슬라이드 4: AI 사서 시연
+     슬라이드 5: v2.0 신규 기능 데모
 ══════════════════════════════════════════ -->
 <div class="page">
-<h1>슬라이드 5 · AI 사서 시연 — 하이라이트</h1>
+<div class="ver-section-header">
+  <span class="ver-label v2l">v2.0 NEW</span>
+  <h1 class="v2h1" style="margin:0; padding:0; border:none;">슬라이드 5 · v2.0 신규 기능 시연 — 4종 개선 & 확장</h1>
+</div>
+<div style="border-bottom:2.5px solid #fbbf24; margin-bottom:14px;"></div>
 
-<div class="slide-block">
-  <div class="slide-header">
-    <div class="slide-num">5</div>
-    <div class="slide-title">AI 사서 탭 — RAG 질의응답 & 서재 담기</div>
-    <div class="slide-time">⏱ 약 2~3분</div>
+<div class="slide-block v2block">
+  <div class="slide-header v2header">
+    <div class="slide-num v2num">5</div>
+    <div class="slide-title">v2.0 개선 기능 시연 — Task #4 · #5 · #6 · #7</div>
+    <div class="slide-time gold-time">⏱ 약 3~4분</div>
   </div>
-  <div class="slide-body">
-    <div class="script">
-      "이제 이 앱의 핵심 기능인 <b>AI 사서</b>를 보여드리겠습니다. 탭을 열면 바로 눈에 띄는 것이 있습니다 — '지금 읽는 책: 채식주의자' 컨텍스트 바입니다."
+  <div class="slide-body v2body">
+    <div class="script v2script">
+      "v1.0 12주 MVP 완성 후, 실제 사용성을 높이기 위해 <b>4가지 핵심 개선</b>을 진행했습니다. 특히 AI 사서에서 마음에 드는 책을 발견했을 때 바로 서재에 담을 수 있게 되었습니다."
     </div>
 
     <div class="demo-step">
-      <div class="demo-num">1</div>
+      <div class="demo-num v2dn">①</div>
       <div class="demo-content">
-        <div class="demo-action">🤖 AI사서 탭 — 컨텍스트 바 확인</div>
-        <div class="demo-script">"서재에서 읽는 중인 책을 자동으로 인식해서 <b>'한강 저자의 다른 작품 추천', '채식주의자 관련 자료 찾기'</b> 같은 제안 칩을 자동 생성합니다. 클릭 한 번으로 관련 질문이 바로 전송됩니다."</div>
+        <div class="demo-action v2da">📌 Task #6 — AI사서 탭: 컨텍스트 바 확인</div>
+        <div class="demo-script">"서재에서 '채식주의자'를 읽는 중으로 설정하면, AI사서 탭을 열었을 때 <b>'지금 읽는 책: 채식주의자 (한강)'</b> 컨텍스트 바가 자동으로 나타납니다. 세 개의 제안 칩 — '한강 저자의 다른 작품 추천', '채식주의자 관련 자료', '비슷한 책 추천'이 자동 생성됩니다."</div>
       </div>
     </div>
     <div class="demo-step">
-      <div class="demo-num">2</div>
+      <div class="demo-num v2dn">②</div>
       <div class="demo-content">
-        <div class="demo-action">🔍 '중학생을 위한 과학책 추천' 칩 클릭</div>
-        <div class="demo-script">"프리셋 칩을 클릭하면 국립중앙도서관 Q&A 5,910건에서 관련 답변을 찾아 Gemini가 정리해줍니다. <b>실제 사서의 답변이 근거가 됩니다.</b>"</div>
+        <div class="demo-action v2da">🔍 질문 전송 → 스크롤 아래로</div>
+        <div class="demo-script">"질문하고 Gemini 답변이 나온 뒤, 아래로 스크롤하면 <b>'언급된 도서'</b> 섹션이 자동 생성됩니다. 답변 텍스트에서 책 제목을 추출해서 보여줍니다."</div>
       </div>
     </div>
     <div class="demo-step">
-      <div class="demo-num">3</div>
+      <div class="demo-num v2dn">③</div>
       <div class="demo-content">
-        <div class="demo-action">📖 답변 확인 & 스크롤 아래로</div>
-        <div class="demo-script">"답변 아래로 스크롤하면 <b>'언급된 도서'</b> 섹션이 자동으로 나타납니다. 답변에서 책 제목을 추출해서 보여주고, 각 책 옆에 <b>'+ 담기'</b> 버튼이 있습니다."</div>
+        <div class="demo-action v2da">📖 Task #4 — "+ 담기" 버튼 클릭</div>
+        <div class="demo-script">"각 책 옆 <b>'+ 담기'</b>를 누르면 바로 서재 '읽고 싶어요'에 추가됩니다. AI 대화에서 서재로 이어지는 <b>원클릭 연결</b>입니다. Gemini 할당량이 초과된 경우에도 정규식으로 최대 6권을 추출합니다."</div>
       </div>
     </div>
     <div class="demo-step">
-      <div class="demo-num">4</div>
+      <div class="demo-num v2dn">④</div>
       <div class="demo-content">
-        <div class="demo-action">✅ '+ 담기' 버튼 클릭</div>
-        <div class="demo-script">"클릭하면 해당 책이 바로 서재의 '읽고 싶어요' 목록에 추가됩니다. AI가 추천한 책을 <b>대화에서 서재로 바로 연결</b>하는 경험입니다."</div>
+        <div class="demo-action v2da">🗂️ Task #7 — 타이머 탭 BGM 버튼 확인</div>
+        <div class="demo-script">"7탭에서 5탭으로 재편했습니다. BGM과 문장보관함은 탭바에서 숨겼지만, 타이머 탭 우측 상단 <b>🎵 버튼</b>으로 BGM에 바로 진입할 수 있습니다. 내정보 탭에서도 단축 메뉴로 접근 가능합니다."</div>
       </div>
     </div>
 
-    <div class="tip-box">
-      <h3>💡 발표 팁 — AI 답변이 느릴 때</h3>
+    <div class="tip-box v2tip" style="margin-top:10px;">
+      <h3>💡 v2.0 발표 팁</h3>
       <ul>
-        <li>Gemini 무료 할당량 초과 시: 검색 결과 직접 표시 + 정규식으로 도서 추출 (폴백 정상 동작)</li>
-        <li>근본 해결 진행 중: GitHub Student Pack 신청 완료 → Google Cloud 크레딧 → Vertex AI 전환 예정</li>
-        <li>로딩 중에는 <b>"지금 5,910건 중에서 가장 관련 있는 답변을 찾고 있습니다"</b>라고 설명</li>
-        <li>답변 속도가 느릴 때는 미리 캡처한 스크린샷을 보여줘도 됩니다</li>
+        <li>"v1.0에서 사용자 피드백을 반영한 실질적인 개선"임을 강조하세요</li>
+        <li>Task #5 백엔드 통합은 사용자 관점에서 보이지 않으므로, <b>"서버 운영이 간단해져 안정성이 올라갔다"</b>고 설명</li>
+        <li>컨텍스트 바 → "+ 담기" 흐름을 <b>하나의 스토리</b>로 연결해서 시연하세요</li>
       </ul>
     </div>
   </div>
@@ -519,14 +607,75 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
 
 
 <!-- ══════════════════════════════════════════
-     발표 슬라이드 5: AI 추천 & 코치
+     슬라이드 6: AI 사서 시연
 ══════════════════════════════════════════ -->
 <div class="page">
-<h1>슬라이드 6 · AI 도서 추천 & 코치 리포트</h1>
+<div class="ver-section-header">
+  <span class="ver-label v1l">v1.0</span>
+  <h1 style="margin:0; padding:0; border:none; color:#0f3460;">슬라이드 6 · AI 사서 시연 — RAG 하이라이트</h1>
+</div>
+<div style="border-bottom:2.5px solid #e94560; margin-bottom:14px;"></div>
 
 <div class="slide-block">
   <div class="slide-header">
     <div class="slide-num">6</div>
+    <div class="slide-title">AI 사서 탭 — RAG 질의응답 심층 시연</div>
+    <div class="slide-time">⏱ 약 2분</div>
+  </div>
+  <div class="slide-body">
+    <div class="script">
+      "AI 사서의 기반 데이터에 대해 설명드리겠습니다. 단순히 AI를 붙인 것이 아니라 <b>국립중앙도서관 실제 사서 Q&A 5,910건</b>이 근거가 됩니다."
+    </div>
+
+    <div class="two-col">
+      <div>
+        <h3>🔍 RAG 동작 원리</h3>
+        <ul class="points">
+          <li>사용자 질문 → 하이브리드 검색 (벡터 65% + BM25 35%)</li>
+          <li>5,910건 중 Top-K 관련 Q&A 컨텍스트 추출</li>
+          <li>Gemini 2.5 Flash가 컨텍스트 기반 답변 생성</li>
+          <li>스트리밍으로 실시간 응답 표시</li>
+        </ul>
+        <div class="script" style="margin-top:8px;">
+          "일반 ChatGPT는 학습 데이터로 답하지만, ReadRhythm AI 사서는 <b>실제 사서가 답변한 내용이 근거</b>가 됩니다. 도서관 이용·자료 추천·저작권에서 특히 정확합니다."
+        </div>
+      </div>
+      <div>
+        <h3>💡 데모 추천 질문</h3>
+        <ul class="points">
+          <li>"중학생을 위한 과학책 추천해 주세요"</li>
+          <li>"한국 현대 소설 입문 도서 추천"</li>
+          <li>"도서관 자료 대출 연장하는 방법"</li>
+          <li>"저작권 만료된 책을 PDF로 배포해도 되나요"</li>
+        </ul>
+        <div class="tip-box" style="margin-top:8px;">
+          <h3>💡 AI 답변이 느릴 때</h3>
+          <ul>
+            <li>Gemini 할당량 초과 시: 검색 결과 직접 표시 (폴백 정상)</li>
+            <li>로딩 중: <b>"지금 5,910건에서 찾고 있습니다"</b>로 설명</li>
+            <li>미리 캡처한 스크린샷 활용 가능</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     슬라이드 7: AI 추천 & 코치
+══════════════════════════════════════════ -->
+<div class="page">
+<div class="ver-section-header">
+  <span class="ver-label v1l">v1.0</span>
+  <h1 style="margin:0; padding:0; border:none; color:#0f3460;">슬라이드 7 · AI 도서 추천 & 코치 리포트</h1>
+</div>
+<div style="border-bottom:2.5px solid #e94560; margin-bottom:14px;"></div>
+
+<div class="slide-block">
+  <div class="slide-header">
+    <div class="slide-num">7</div>
     <div class="slide-title">Claude AI — 개인 맞춤 추천 & 주간 코치</div>
     <div class="slide-time">⏱ 약 2분</div>
   </div>
@@ -561,45 +710,10 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
     <div class="script" style="margin-top:10px;">
       "백엔드 API 키가 없거나 네트워크 문제가 있어도 <b>목업 데이터로 자동 폴백</b>됩니다. 실제 배포 환경에서도 사용자 경험이 끊기지 않습니다."
     </div>
-  </div>
-</div>
-
-<div class="slide-block">
-  <div class="slide-header">
-    <div class="slide-num">7</div>
-    <div class="slide-title">개발 회고 & 향후 계획</div>
-    <div class="slide-time">⏱ 약 1~2분</div>
-  </div>
-  <div class="slide-body">
-    <div class="script">
-      "12주 동안 혼자서 기획·설계·개발·배포까지 전 과정을 진행했습니다. <b>가장 어려웠던 점</b>은 두 가지였습니다."
-    </div>
-
-    <div class="two-col">
-      <div>
-        <h3>🔥 어려웠던 점</h3>
-        <ul class="points">
-          <li>국립중앙도서관 5,910건 크롤링 · 임베딩 · DB 구축 전 과정 직접 구현</li>
-          <li>NestJS 백엔드 → FastAPI 통합 (아키텍처 전환)</li>
-          <li>Gemini 할당량 초과 대응 → 정규식 폴백 설계</li>
-          <li>React Native Web에서 ScrollView 스크롤 동작 이슈</li>
-        </ul>
-      </div>
-      <div>
-        <h3>🚀 향후 계획</h3>
-        <ul class="points">
-          <li>EAS Build — TestFlight · Play Console 실제 배포</li>
-          <li>카카오/네이버 도서 API 키 연동 (실제 도서 검색)</li>
-          <li>푸시 알림 — 독서 목표 달성 알림</li>
-          <li>Gemini API 할당량 확대 — GitHub Student Pack 신청 완료(심사 중) → Google Cloud 크레딧 → Vertex AI 전환 예정</li>
-          <li>소셜 기능 — 독서 기록 공유</li>
-        </ul>
-      </div>
-    </div>
 
     <div class="tip-box">
       <h3>💡 마무리 멘트 예시</h3>
-      <p>"ReadRhythm은 기록·질문·성장이라는 세 키워드로 독서 경험을 바꾸는 앱입니다. 직접 만든 AI 사서가 <b>국립중앙도서관의 지식을 손안에서 바로 답해주는 경험</b>을 목표로 했습니다. 감사합니다."</p>
+      <p>"v1.0에서 12주 동안 기초를 다지고, v2.0에서 실제 사용성을 높이는 개선을 더했습니다. ReadRhythm은 기록·질문·성장이라는 세 키워드로 독서 경험을 바꾸는 앱입니다. <b>국립중앙도서관의 지식을 손안에서</b> — 감사합니다."</p>
     </div>
   </div>
 </div>
@@ -628,13 +742,13 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
 </div>
 
 <div class="qa-card">
-  <div class="qa-q">실제 배포는 언제 하나요?</div>
-  <div class="qa-a">코드베이스는 <b>EAS Build 설정까지 완료</b>된 상태입니다. Apple Developer Account(연 129,000원)와 Google Play Console(25달러 1회) 가입 후 TestFlight·Play Console에 바로 배포 가능합니다. API 키(Gemini, Anthropic)와 PostgreSQL 클라우드 이전이 필요합니다.</div>
+  <div class="qa-q"><span style="color:#92400e; font-size:8.5pt; background:#fef3c7; padding:1px 6px; border-radius:4px; margin-right:4px;">v2.0</span>어떤 개선이 가장 의미 있었나요?</div>
+  <div class="qa-a">Task #6 컨텍스트 바와 Task #4 서재 담기의 조합이 가장 임팩트가 컸습니다. <b>읽는 책을 인식 → 제안 칩 자동 생성 → 질문 → 답변에서 바로 담기</b>라는 흐름이 만들어지면서, AI 사서가 단순 Q&A를 넘어 <b>독서 여정 전체의 조력자</b>가 되었습니다.</div>
 </div>
 
 <div class="qa-card">
   <div class="qa-q">혼자 개발했나요? 얼마나 걸렸나요?</div>
-  <div class="qa-a">네, <b>기획·설계·크롤링·DB 구축·프론트엔드·백엔드·AI 통합·GitHub 배포</b>까지 전 과정을 혼자 진행했습니다. Claude Code AI 도구를 적극 활용해 12주 만에 완성했습니다. 화면 수 30개 이상, GitHub 레포 3개, Q&A 데이터 5,910건 구축이 포함됩니다.</div>
+  <div class="qa-a">네, <b>기획·설계·크롤링·DB 구축·프론트엔드·백엔드·AI 통합·GitHub 배포</b>까지 전 과정을 혼자 진행했습니다. v1.0 12주 완성 후 v2.0 추가 개선(Task #4~#7)까지 더했습니다. Claude Code AI 도구를 적극 활용했으며, 화면 수 30개 이상, Q&A 데이터 5,910건 구축이 포함됩니다.</div>
 </div>
 
 <div class="tip-box" style="margin-top:14px;">
@@ -642,7 +756,7 @@ h3 { font-size:10.5pt; font-weight:700; color:#0f3460; margin:10px 0 5px; }
   <ul>
     <li>모르는 질문은 <b>"좋은 질문입니다. 현재는 구현되어 있지 않지만, 향후 계획에 포함되어 있습니다"</b>로 자연스럽게 전환</li>
     <li>기술적 질문이 너무 깊어지면 <b>"발표 후에 개별적으로 더 설명드려도 될까요?"</b>로 리디렉션</li>
-    <li>칭찬 질문에는 <b>구체적인 수치(5,910건, 12주, 30종 배지)</b>를 언급해 신뢰도 높이기</li>
+    <li>칭찬 질문에는 <b>구체적인 수치(5,910건, 12주, 30종 배지, v2.0 4종 개선)</b>를 언급해 신뢰도 높이기</li>
   </ul>
 </div>
 </div>
