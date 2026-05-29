@@ -208,95 +208,102 @@ export default function HomeScreen() {
 
         {/* ── Row 1: 지금 읽는 책(좌) + 오늘의 목표(우) ── */}
         <View style={styles.twoCol}>
+
           {/* 지금 읽는 책 */}
           <View style={[styles.box, styles.boxReading]}>
-            <View style={styles.boxHeader}>
-              <Text style={styles.boxTitle}>지금 읽는 책</Text>
-              <TouchableOpacity onPress={() => router.push('/search')}>
-                <Text style={styles.boxAction}>+</Text>
-              </TouchableOpacity>
-            </View>
-            {reading.length === 0 ? (
-              <TouchableOpacity style={styles.emptyBox} onPress={() => router.push('/search')}>
-                <Text style={styles.emptyEmoji}>📚</Text>
-                <Text style={styles.emptyText}>책을 추가해보세요</Text>
-              </TouchableOpacity>
-            ) : (
-              <Pressable
-                style={styles.compactBook}
-                onPress={() => router.push(`/book/${reading[0].id}`)}
-              >
-                <BookCover
-                  coverUrl={reading[0].book.coverUrl}
-                  title={reading[0].book.title}
-                  spineColor={reading[0].spineColor}
-                  width={44}
-                  height={62}
-                />
-                <View style={styles.compactBookInfo}>
-                  <Text style={styles.compactTitle} numberOfLines={2}>{reading[0].book.title}</Text>
-                  <Text style={styles.compactAuthor} numberOfLines={1}>{reading[0].book.author}</Text>
-                  {reading[0].book.totalPages ? (
-                    <View style={styles.progressWrap}>
-                      <View style={styles.progressBg}>
-                        <View style={[styles.progressFill, {
-                          width: `${Math.round(reading[0].currentPage / reading[0].book.totalPages * 100)}%` as any,
-                        }]} />
-                      </View>
-                      <Text style={styles.progressText}>
-                        {Math.round(reading[0].currentPage / reading[0].book.totalPages * 100)}%
-                      </Text>
-                    </View>
-                  ) : null}
-                  <TouchableOpacity
-                    style={[styles.startBtnSm, isTimerRunning && styles.startBtnActive]}
-                    onPress={() => handleQuickStart(reading[0].id, reading[0].currentPage)}
-                  >
-                    <Text style={styles.startBtnSmText}>{isTimerRunning ? '⏱ 진행중' : '▶ 시작'}</Text>
+            <View style={styles.boxInner}>
+              {/* 좌 30%: 아이콘 + 라벨 */}
+              <View style={styles.labelCol}>
+                <Text style={styles.labelEmoji}>📚</Text>
+                <Text style={styles.labelText}>지금{'\n'}읽는{'\n'}책</Text>
+                <TouchableOpacity onPress={() => router.push('/search')}>
+                  <Text style={styles.labelAdd}>+</Text>
+                </TouchableOpacity>
+              </View>
+              {/* 우 70%: 내용 */}
+              <View style={styles.dataCol}>
+                {reading.length === 0 ? (
+                  <TouchableOpacity style={styles.emptyBox} onPress={() => router.push('/search')}>
+                    <Text style={styles.emptyText}>책을{'\n'}추가해보세요</Text>
+                    <Text style={styles.emptyHint}>검색 →</Text>
                   </TouchableOpacity>
-                </View>
-              </Pressable>
-            )}
-            {reading.length > 1 && (
-              <Text style={styles.moreBooks}>외 {reading.length - 1}권 더 ›</Text>
-            )}
+                ) : (
+                  <Pressable style={styles.compactBook} onPress={() => router.push(`/book/${reading[0].id}`)}>
+                    <BookCover
+                      coverUrl={reading[0].book.coverUrl}
+                      title={reading[0].book.title}
+                      spineColor={reading[0].spineColor}
+                      width={56}
+                      height={80}
+                    />
+                    <View style={styles.compactBookInfo}>
+                      <Text style={styles.compactTitle} numberOfLines={2}>{reading[0].book.title}</Text>
+                      <Text style={styles.compactAuthor} numberOfLines={1}>{reading[0].book.author}</Text>
+                      {reading[0].book.totalPages ? (
+                        <View style={styles.progressWrap}>
+                          <View style={styles.progressBg}>
+                            <View style={[styles.progressFill, {
+                              width: `${Math.round(reading[0].currentPage / reading[0].book.totalPages * 100)}%` as any,
+                            }]} />
+                          </View>
+                          <Text style={styles.progressText}>
+                            {Math.round(reading[0].currentPage / reading[0].book.totalPages * 100)}%
+                          </Text>
+                        </View>
+                      ) : null}
+                      <TouchableOpacity
+                        style={[styles.startBtnSm, isTimerRunning && styles.startBtnActive]}
+                        onPress={() => handleQuickStart(reading[0].id, reading[0].currentPage)}
+                      >
+                        <Text style={styles.startBtnSmText}>{isTimerRunning ? '⏱ 진행중' : '▶ 시작'}</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </Pressable>
+                )}
+                {reading.length > 1 && (
+                  <Text style={styles.moreBooks}>외 {reading.length - 1}권 더 ›</Text>
+                )}
+              </View>
+            </View>
           </View>
 
           {/* 오늘의 목표 */}
-          <TouchableOpacity
-            style={[styles.box, goalDone && styles.boxDone]}
-            onPress={() => router.push('/goal-settings')}
-          >
-            <View style={styles.boxHeader}>
-              <Text style={styles.boxTitle}>오늘의 목표</Text>
-              {goalDone && <Text style={styles.doneBadge}>🎉</Text>}
-            </View>
-            <View style={styles.goalMetric}>
-              <Text style={styles.goalMetricIcon}>⏱</Text>
-              <View style={styles.goalMetricBody}>
-                <View style={styles.goalNumRow}>
-                  <Text style={styles.goalNumBig}>{todayMin}</Text>
-                  <Text style={styles.goalNumUnit}>/ {dailyGoalMinutes}분</Text>
-                </View>
-                <View style={styles.progressBg}>
-                  <View style={[styles.progressFill, {
-                    width: `${Math.min(todayMin / dailyGoalMinutes, 1) * 100}%` as any,
-                  }]} />
-                </View>
+          <TouchableOpacity style={[styles.box, goalDone && styles.boxDone]} onPress={() => router.push('/goal-settings')}>
+            <View style={styles.boxInner}>
+              {/* 좌 30%: 아이콘 + 라벨 */}
+              <View style={styles.labelCol}>
+                <Text style={styles.labelEmoji}>🎯</Text>
+                <Text style={styles.labelText}>오늘의{'\n'}목표</Text>
+                {goalDone && <Text style={{ fontSize: 18 }}>🎉</Text>}
               </View>
-            </View>
-            <View style={styles.goalMetric}>
-              <Text style={styles.goalMetricIcon}>📄</Text>
-              <View style={styles.goalMetricBody}>
-                <View style={styles.goalNumRow}>
-                  <Text style={[styles.goalNumBig, { color: Colors.green }]}>{todayPg}</Text>
-                  <Text style={styles.goalNumUnit}>/ {dailyGoalPages}p</Text>
+              {/* 우 70%: 수치 */}
+              <View style={styles.dataCol}>
+                <View style={styles.goalMetric}>
+                  <Text style={styles.goalMetricIcon}>⏱</Text>
+                  <View style={styles.goalMetricBody}>
+                    <View style={styles.goalNumRow}>
+                      <Text style={styles.goalNumBig}>{todayMin}</Text>
+                      <Text style={styles.goalNumUnit}>/{dailyGoalMinutes}분</Text>
+                    </View>
+                    <View style={styles.progressBg}>
+                      <View style={[styles.progressFill, { width: `${Math.min(todayMin / dailyGoalMinutes, 1) * 100}%` as any }]} />
+                    </View>
+                  </View>
                 </View>
-                <View style={styles.progressBg}>
-                  <View style={[styles.progressFill, {
-                    width: `${Math.min(todayPg / dailyGoalPages, 1) * 100}%` as any,
-                    backgroundColor: Colors.green,
-                  }]} />
+                <View style={styles.goalMetric}>
+                  <Text style={styles.goalMetricIcon}>📄</Text>
+                  <View style={styles.goalMetricBody}>
+                    <View style={styles.goalNumRow}>
+                      <Text style={[styles.goalNumBig, { color: Colors.green }]}>{todayPg}</Text>
+                      <Text style={styles.goalNumUnit}>/{dailyGoalPages}p</Text>
+                    </View>
+                    <View style={styles.progressBg}>
+                      <View style={[styles.progressFill, {
+                        width: `${Math.min(todayPg / dailyGoalPages, 1) * 100}%` as any,
+                        backgroundColor: Colors.green,
+                      }]} />
+                    </View>
+                  </View>
                 </View>
               </View>
             </View>
@@ -305,20 +312,37 @@ export default function HomeScreen() {
 
         {/* ── Row 2: AI 독서 코치(좌) + AI 맞춤 추천(우) ── */}
         <View style={styles.twoCol}>
+
           <TouchableOpacity style={styles.box} onPress={() => router.push('/coach-report')}>
-            <Text style={styles.aiBoxEmoji}>🤖</Text>
-            <Text style={styles.aiBoxTitle}>AI 독서 코치</Text>
-            <Text style={styles.aiBoxSub} numberOfLines={2}>
-              {streak > 0 ? `🔥 ${streak}일 연속\n주간 리포트 보기` : '나의 독서 인사이트\n확인하기'}
-            </Text>
-            <Text style={styles.aiBoxArrow}>›</Text>
+            <View style={styles.boxInner}>
+              <View style={styles.labelCol}>
+                <Text style={styles.labelEmoji}>🤖</Text>
+                <Text style={styles.labelText}>AI{'\n'}독서{'\n'}코치</Text>
+              </View>
+              <View style={styles.dataCol}>
+                <Text style={styles.aiDataText} numberOfLines={4}>
+                  {streak > 0
+                    ? `🔥 ${streak}일 연속\n독서 중\n\n리포트 보기`
+                    : '나의 독서\n인사이트를\n확인해보세요'}
+                </Text>
+                <Text style={styles.aiArrow}>›</Text>
+              </View>
+            </View>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.box} onPress={() => router.push('/recommend')}>
-            <Text style={styles.aiBoxEmoji}>✨</Text>
-            <Text style={styles.aiBoxTitle}>AI 맞춤 추천</Text>
-            <Text style={styles.aiBoxSub} numberOfLines={2}>{'독서 패턴 분석\n궁합 맞는 책 찾기'}</Text>
-            <Text style={styles.aiBoxArrow}>›</Text>
+            <View style={styles.boxInner}>
+              <View style={styles.labelCol}>
+                <Text style={styles.labelEmoji}>✨</Text>
+                <Text style={styles.labelText}>AI{'\n'}맞춤{'\n'}추천</Text>
+              </View>
+              <View style={styles.dataCol}>
+                <Text style={styles.aiDataText} numberOfLines={4}>
+                  {'독서 패턴\n분석으로\n\n맞춤 책 찾기'}
+                </Text>
+                <Text style={styles.aiArrow}>›</Text>
+              </View>
+            </View>
           </TouchableOpacity>
         </View>
 
@@ -395,28 +419,40 @@ const styles = StyleSheet.create({
   demoBtnText: { fontSize: FontSize.xs, fontWeight: '600', color: Colors.primary },
 
   // ── 2컬럼 행 ──
-  twoCol: {
-    flexDirection: 'row', gap: Spacing.sm, alignItems: 'stretch',
-  },
+  twoCol: { flexDirection: 'row', gap: Spacing.sm, alignItems: 'stretch' },
 
   // ── 공통 박스 ──
   box: {
     flex: 1, backgroundColor: Colors.surface, borderRadius: Radius.md,
     padding: Spacing.md, ...Shadow.card,
-    borderWidth: 1, borderColor: Colors.border, gap: Spacing.sm,
+    borderWidth: 1, borderColor: Colors.border,
   },
-  boxReading: { minHeight: 180 },
+  boxReading: { minHeight: 190 },
   boxDone: { borderColor: Colors.green, borderWidth: 1.5 },
-  boxHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  boxTitle: { fontSize: FontSize.md, fontWeight: '700', color: Colors.text },
-  boxAction: { fontSize: FontSize.lg, fontWeight: '700', color: Colors.primary },
-  doneBadge: { fontSize: 18 },
 
-  // ── 지금 읽는 책 (compact) ──
-  emptyBox: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 6, paddingVertical: Spacing.md },
+  // ── 박스 내부 공통 레이아웃 (좌30% 라벨 + 우70% 내용) ──
+  boxInner: { flexDirection: 'row', flex: 1, gap: Spacing.sm },
+
+  // 좌 30%: 아이콘 + 라벨
+  labelCol: {
+    width: '30%', alignItems: 'flex-start', justifyContent: 'flex-start', gap: 6,
+  },
+  labelEmoji: { fontSize: 26 },
+  labelText: {
+    fontSize: FontSize.xs, fontWeight: '700', color: Colors.textSub,
+    lineHeight: 16, flexShrink: 1,
+  },
+  labelAdd: { fontSize: FontSize.xl, fontWeight: '700', color: Colors.primary, lineHeight: 22 },
+
+  // 우 70%: 실제 내용
+  dataCol: { flex: 1, gap: Spacing.sm, justifyContent: 'center' },
+
+  // ── 지금 읽는 책 내용 ──
+  emptyBox: { flex: 1, justifyContent: 'center', gap: 6 },
   emptyEmoji: { fontSize: 28 },
-  emptyText: { fontSize: FontSize.xs, color: Colors.textSub, textAlign: 'center' },
-  compactBook: { flexDirection: 'row', gap: Spacing.sm, flex: 1 },
+  emptyText: { fontSize: FontSize.sm, color: Colors.textSub },
+  emptyHint: { fontSize: FontSize.xs, color: Colors.primary, fontWeight: '600' },
+  compactBook: { flexDirection: 'row', gap: Spacing.sm, alignItems: 'flex-start' },
   compactBookInfo: { flex: 1, gap: 4, justifyContent: 'center' },
   compactTitle: { fontSize: FontSize.sm, fontWeight: '700', color: Colors.text, lineHeight: 18 },
   compactAuthor: { fontSize: FontSize.xs, color: Colors.textSub },
@@ -430,21 +466,21 @@ const styles = StyleSheet.create({
   },
   startBtnActive: { backgroundColor: Colors.accent },
   startBtnSmText: { fontSize: FontSize.xs, fontWeight: '700', color: '#fff' },
-  moreBooks: { fontSize: FontSize.xs, color: Colors.primary, fontWeight: '600', textAlign: 'right' },
+  moreBooks: { fontSize: FontSize.xs, color: Colors.primary, fontWeight: '600' },
 
-  // ── 오늘의 목표 (큰 숫자) ──
-  goalMetric: { flexDirection: 'row', alignItems: 'flex-start', gap: 6 },
-  goalMetricIcon: { fontSize: 16, marginTop: 4 },
-  goalMetricBody: { flex: 1, gap: 4 },
-  goalNumRow: { flexDirection: 'row', alignItems: 'baseline', gap: 4 },
+  // ── 오늘의 목표 내용 ──
+  goalMetric: { flexDirection: 'row', alignItems: 'flex-start', gap: 4 },
+  goalMetricIcon: { fontSize: 14, marginTop: 5 },
+  goalMetricBody: { flex: 1, gap: 3 },
+  goalNumRow: { flexDirection: 'row', alignItems: 'baseline', gap: 3 },
   goalNumBig: { fontSize: FontSize.xxl, fontWeight: '800', color: Colors.primary, lineHeight: 34 },
-  goalNumUnit: { fontSize: FontSize.sm, color: Colors.textSub },
+  goalNumUnit: { fontSize: FontSize.xs, color: Colors.textSub },
 
-  // ── AI 박스 ──
-  aiBoxEmoji: { fontSize: 28 },
-  aiBoxTitle: { fontSize: FontSize.md, fontWeight: '700', color: Colors.text },
-  aiBoxSub: { fontSize: FontSize.xs, color: Colors.textSub, lineHeight: 18, flex: 1 },
-  aiBoxArrow: { fontSize: 22, color: Colors.primary, fontWeight: '700', alignSelf: 'flex-end' },
+  // ── AI 박스 내용 ──
+  aiDataText: {
+    fontSize: FontSize.sm, color: Colors.textSub, lineHeight: 20, flex: 1,
+  },
+  aiArrow: { fontSize: 22, color: Colors.primary, fontWeight: '700', alignSelf: 'flex-end' },
 
   // ── 공통 섹션 (이번 주) ──
   section: { gap: Spacing.sm },
