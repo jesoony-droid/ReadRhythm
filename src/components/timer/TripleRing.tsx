@@ -7,16 +7,16 @@ import { Path, Svg, G } from 'react-native-svg';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
-// 스타디움(운동장 트랙) 치수
-const STROKE  = 14;
-const SIZE_W  = 320;
-const SIZE_H  = 170;
+// 스타디움(운동장 트랙) 치수 — 2배 확대
+const STROKE  = 26;
+const SIZE_W  = 640;
+const SIZE_H  = 340;
 
 // 3개 트랙: 바깥→중간→안쪽
 const TRACKS = [
-  { a: 148, b: 76, color: '#5B7EFF', trackColor: 'rgba(91,126,255,0.2)'  },
-  { a: 116, b: 58, color: '#9B6DFF', trackColor: 'rgba(155,109,255,0.2)' },
-  { a:  84, b: 40, color: '#30D158', trackColor: 'rgba(48,209,88,0.2)'   },
+  { a: 296, b: 152, color: '#5B7EFF', trackColor: 'rgba(91,126,255,0.2)'  },
+  { a: 232, b: 116, color: '#9B6DFF', trackColor: 'rgba(155,109,255,0.2)' },
+  { a: 168, b:  80, color: '#30D158', trackColor: 'rgba(48,209,88,0.2)'   },
 ] as const;
 
 // 스타디움 SVG path (center=0,0, 상단 중심에서 시계방향 출발)
